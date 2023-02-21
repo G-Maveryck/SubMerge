@@ -22,6 +22,7 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
 
     player->setAudioOutput(audioOutput);
 
+
     connect(ui.actionOpen,  SIGNAL(triggered()),    this, SLOT(on_OpenFile_triggered()  ));
 
     connect(ui.B_Play,      SIGNAL(clicked()),      this, SLOT(on_PlayButton_Clicked()  ));
@@ -42,7 +43,7 @@ SM_MainWindow::~SM_MainWindow()
 void SM_MainWindow::on_OpenFile_triggered()
 {
     player->stop();
-
+    
     currentFileInfo->setFile(QFileDialog::getOpenFileName());
 
     ui.l_trackName->setText(currentFileInfo->fileName());
@@ -50,6 +51,7 @@ void SM_MainWindow::on_OpenFile_triggered()
     player->setSource(currentFileInfo->absoluteFilePath());
     player->play();
 
+    delete fileInfo;
 }
 
 

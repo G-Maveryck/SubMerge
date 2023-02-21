@@ -33,6 +33,8 @@ private:
 
     QFileInfo* currentFileInfo;
 
+    QUrl m_currentFilePath;
+    QString m_currentFileName;
 
     QMediaPlayer* player;
     QAudioOutput* audioOutput;
