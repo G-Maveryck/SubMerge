@@ -10,6 +10,7 @@
 #include <QtMultimedia/QAudioOutput>
 #include <QFileInfo>
 
+
 class SM_MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,12 +21,19 @@ public:
 
 
 private slots:
-    
+        // Mediaplayer control
     void on_PlayButton_Clicked();
     void on_PauseButton_Clicked();
-    void on_OpenFile_triggered();
-    void on_SliderPostion_moved();
+    void on_Volume_changed(int volumePos);
+    void on_DurationChanged(qint64 duration);
+   
 
+        // Menu controls
+    void on_OpenFile_triggered();
+
+        // Timeline controls
+    void on_SliderPosition_moved(qint64 newPosition);
+    void on_playerProgress(qint64 position);
 
 
 private:
@@ -33,11 +41,10 @@ private:
 
     QFileInfo* currentFileInfo;
 
-    QUrl m_currentFilePath;
-    QString m_currentFileName;
-
     QMediaPlayer* player;
     QAudioOutput* audioOutput;
+
+ 
 
 };
 
