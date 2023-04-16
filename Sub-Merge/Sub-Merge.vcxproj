@@ -31,12 +31,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.4.2_msvc2019_64</QtInstall>
+    <QtInstall>6.5.0_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;multimedia</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.4.2_msvc2019_64</QtInstall>
+    <QtInstall>6.5.0_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;multimedia</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -60,19 +60,20 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalLibraryDirectories>C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;C:\Libraries\SQLite\win64_x64;C:\Libraries\taglib\bin;C:\Libraries\taglib\lib;C:\Libraries\rubberband\lib;C:\Libraries\rubberband\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);sqlite3.lib;tag.lib;rubberband.lib;rubberband-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Program Files\taglib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\taglib\include;C:\Libraries\rubberband\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);$(Qt_LIBS_);C:\Program Files\taglib\lib</AdditionalDependencies>
+      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);sqlite3.lib;tag.lib;rubberband.lib;rubberband-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;C:\Libraries\SQLite\win64_x64;C:\Libraries\taglib\bin;C:\Libraries\taglib\lib;C:\Libraries\rubberband\lib;C:\Libraries\rubberband\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Program Files\taglib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\taglib\include;C:\Libraries\rubberband\include</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -105,8 +106,17 @@
     <QtRcc Include="SubMerge.qrc" />
     <QtUic Include="SubMerge.ui" />
     <QtMoc Include="SM_MainWindow.h" />
+    <ClCompile Include="..\..\..\..\..\..\Libraries\SQLite\amalgamation\shell.c" />
+    <ClCompile Include="..\..\..\..\..\..\Libraries\SQLite\amalgamation\sqlite3.c" />
+    <ClCompile Include="Audio_player.cpp" />
     <ClCompile Include="SM_MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Sub-Merge.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Audio_player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

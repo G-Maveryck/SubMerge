@@ -9,6 +9,10 @@
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimedia/QAudioOutput>
 #include <QFileInfo>
+#include <QAudio>
+
+#include "Audio_player.h"
+
 
 
 class SM_MainWindow : public QMainWindow
@@ -20,20 +24,20 @@ public:
     ~SM_MainWindow();                            // Destructeur
 
 
-private slots:
+public slots:
         // Mediaplayer control
-    void on_PlayButton_Clicked();
-    void on_PauseButton_Clicked();
-    void on_Volume_changed(int volumePos);
-    void on_DurationChanged(qint64 duration);
-   
+    void on_PlayButton_Clicked();   // Start audio playing
+    void on_PauseButton_Clicked();  // Pause audio playing
+    void on_Volume_changed(int volumePos);  // Change the audio
+    void on_DurationChanged(int duration);
+    void on_actionPlayPause_triggered();
 
         // Menu controls
     void on_OpenFile_triggered();
 
         // Timeline controls
-    void on_SliderPosition_moved(qint64 newPosition);
-    void on_playerProgress(qint64 position);
+    // void on_SliderPosition_moved(int newPosition);
+    void on_playerProgress(int position);
 
 
 private:
@@ -41,10 +45,18 @@ private:
 
     QFileInfo* currentFileInfo;
 
-    QMediaPlayer* player;
-    QAudioOutput* audioOutput;
+    AudioPlayer* player;
 
- 
+   
+
+
+private slots:
+    void displayAudioDecodingError(QAudioDecoder::Error error); 
+    // Prompt an error popup for an audio decoding error
+
+
+    void displayAudioDeviceError(QAudio::Error error);
+    // Prompt an error popup for an audio device error
 
 };
 

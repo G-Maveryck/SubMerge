@@ -1,0 +1,1 @@
+Exception non gérée à 0x00007FFF72DD4530 (rpcrt4.dll) dans Sub-Merge.exe : 0xC00000FD: Stack overflow (paramètres : 0x0000000000000001, 0x0000005741D03FD8).

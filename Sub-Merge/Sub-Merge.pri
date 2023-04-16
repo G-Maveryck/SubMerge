@@ -7,8 +7,12 @@
 message("You are running qmake on a generated .pro file. This may not work!")
 
 
-HEADERS += ./SM_MainWindow.h
-SOURCES += ./SM_MainWindow.cpp \
-    ./main.cpp
+HEADERS += ./AudioTag.h \
+    ./SM_MainWindow.h
+SOURCES += ./AudioTag.cpp \
+    ./SM_MainWindow.cpp \
+    ./main.cpp \
+    ../../../../../../Libraries/SQLite/amalgamation/shell.c \
+    ../../../../../../Libraries/SQLite/amalgamation/sqlite3.c
 FORMS += ./SubMerge.ui
 RESOURCES += SubMerge.qrc

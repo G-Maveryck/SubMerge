@@ -7,6 +7,15 @@
     <ClCompile Include="SM_MainWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Libraries\SQLite\amalgamation\shell.c">
+      <Filter>thirdparty\SQLite3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\Libraries\SQLite\amalgamation\sqlite3.c">
+      <Filter>thirdparty\SQLite3</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio_player.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SubMerge.qrc" />
@@ -18,10 +27,22 @@
     <Filter Include="src">
       <UniqueIdentifier>{d0c88724-8437-4e3e-8c15-f7f9afccb564}</UniqueIdentifier>
     </Filter>
+    <Filter Include="thirdparty">
+      <UniqueIdentifier>{688c2760-2d97-4e69-995d-e806454d8852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="thirdparty\SQLite3">
+      <UniqueIdentifier>{e7ecaa7a-3569-4c31-a9d9-8ba01e62d587}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SM_MainWindow.h">
       <Filter>src</Filter>
     </QtMoc>
+    <QtMoc Include="Audio_player.h">
+      <Filter>src</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Sub-Merge.rc" />
   </ItemGroup>
 </Project>
