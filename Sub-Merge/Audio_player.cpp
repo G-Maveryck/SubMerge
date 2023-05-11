@@ -20,7 +20,7 @@ AudioPlayer::AudioPlayer(QObject *parent) : QObject(parent),
 					    time_ratio(1.0),
 					    pitch_scale(1.0),
 					    option_use_r3_engine(true),
-					    option_formant_preserved(true),
+					    option_formant_preserved(false),
 					    option_high_quality(true),
 					    audio_device(QMediaDevices::defaultAudioOutput())
 {
@@ -166,13 +166,17 @@ void AudioPlayer::startPlaying()
   timer = new QTimer(this);
   timer->setInterval(10);
   temp_buffer = new QBuffer(this);
+
   connect(timer, &QTimer::timeout, this, &AudioPlayer::fillAudioBuffer);
   connect(audio_output, &QAudioSink::stateChanged, this, &AudioPlayer::manageAudioOutputState);
+
   output_buffer = audio_output->start();
   QAudio::Error error_status = audio_output->error();
+
   if ((error_status == QAudio::NoError) || (error_status == QAudio::UnderrunError))
     fillAudioBuffer();
-  else {
+  else 
+  {
     qDebug() << "Error while opening audio device:" << error_status;
     emit audioOutputError(error_status);
     stopPlaying();

@@ -16,6 +16,12 @@
     <ClCompile Include="Audio_player.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="TimelineFrame.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveformWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SubMerge.qrc" />
@@ -41,8 +47,19 @@
     <QtMoc Include="Audio_player.h">
       <Filter>src</Filter>
     </QtMoc>
+    <QtMoc Include="TimelineFrame.h">
+      <Filter>src</Filter>
+    </QtMoc>
+    <QtMoc Include="WaveformWidget.h">
+      <Filter>src</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sub-Merge.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DebugMacro.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -65,6 +65,7 @@
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\taglib\include;C:\Libraries\rubberband\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SM_DEBUG;$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -74,6 +75,7 @@
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\taglib\include;C:\Libraries\rubberband\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SM_RELEASE;$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -82,7 +84,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,7 +97,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>MaxSpeed</Optimization>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,6 +105,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="TimelineFrame.cpp" />
+    <ClCompile Include="WaveformWidget.cpp" />
     <QtRcc Include="SubMerge.qrc" />
     <QtUic Include="SubMerge.ui" />
     <QtMoc Include="SM_MainWindow.h" />
@@ -117,6 +121,15 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Audio_player.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="TimelineFrame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="WaveformWidget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DebugMacro.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

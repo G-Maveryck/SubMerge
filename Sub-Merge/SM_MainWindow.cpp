@@ -1,32 +1,41 @@
+/*
+
+*/
+
+
 #include "SM_MainWindow.h"
+#include "DebugMacro.h"
 
 #include <QPushButton>
-#include <QDebug>
+
 #include <QFileDialog>
 #include <QString>
 #include <QMessageBox>
 
+#include <QDebug>
+
+
+
 
 SM_MainWindow::SM_MainWindow(QWidget* parent)
     : QMainWindow(parent)
-    
 {
     ui.setupUi(this);
-    ui.l_trackName->setText("idle...");
 
     currentFileInfo = new QFileInfo();
-
     player = new AudioPlayer(this);
 
-    // audioOutput = new QAudioOutput(player);
-    // player->setAudioOutput(audioOutput);
 
-    // player->updateVolume(80.0f);
+    ui.l_trackName->setText("idle...");
+
+    Timeline = new TimelineFrame(this);
+    ui.gridLayout_2->addWidget(Timeline);
 
 
 
+        // Connection of the differrents elements
     connect(ui.actionOpen,  SIGNAL(triggered()),    
-            this,           SLOT(on_OpenFile_triggered()  ));
+            this,           SLOT(on_OpenFile_triggered())   );
 
     connect(ui.B_Play, SIGNAL(clicked()), 
             this,      SLOT(on_PlayButton_Clicked()) );
@@ -50,9 +59,11 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     connect(player, SIGNAL(readingPositionChanged(int)),
             this,   SLOT(on_playerProgress(int))  );
 
+    connect(ui.s_Pitch, SIGNAL(sliderMoved(int)),
+            this,   SLOT(on_sliderPitch_moved(int)) );
 
-   // connect(ui.TimeLine, SIGNAL(sliderMoved(int)), 
-   //         this,        SLOT(on_SliderPosition_moved(int)) );
+    connect(ui.s_Time, SIGNAL(sliderMoved(int)),
+            this,      SLOT(on_sliderTime_moved(int)) );
 
 
 
@@ -65,11 +76,13 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     connect(player, SIGNAL(audioOutputError(QAudio::Error)),
             this,   SLOT(displayAudioDeviceError(QAudio::Error)) );
     
+
+ 
 }
 
 SM_MainWindow::~SM_MainWindow()
 {
-    delete currentFileInfo;
+
 }
 
 
@@ -82,27 +95,26 @@ void SM_MainWindow::on_OpenFile_triggered()
 {
         // Open Dialog box, and gather information on the selected file.
         // Store them in the "QFileInfo* currentFileInfo" atribute.
-    currentFileInfo->setFile(QFileDialog::getOpenFileName(
-                                            this, 
-                                            tr("Open file"),
-                                            "C:/user/",
-                                            tr("Audio (*.wav, *.mp3, *.ogg, *.flac)")) );
-   
     if (player->getStatus() != AudioPlayer::Stopped && player->getStatus() != AudioPlayer::Loading)
     {
         player->stopPlaying();
     }
-   
     else if (player->getStatus() == AudioPlayer::Loading)
     {
         player->cancelDecoding();
-    }
-
-
+    } 
+    
+    currentFileInfo->setFile(QFileDialog::getOpenFileName(
+                                            this, 
+                                            tr("Open file"),
+                                            "C:/user/",
+                                            tr("All Files (*.*)")) );
+   
+ 
         //Set label name on the track name.
     ui.l_trackName->setText(currentFileInfo->fileName());
 
-        // Set the player's source on this selected file
+        // Set the player's source to selected file
     player->decodeFile(currentFileInfo->canonicalFilePath() );
 
     player->startPlaying();
@@ -170,8 +182,7 @@ void SM_MainWindow::on_Volume_changed(int volumePos)
 
 
 
-// "Timeline" slider implementation
-
+// Progression slider implementation
 void SM_MainWindow::on_DurationChanged(int duration)
 {
         // Used to make the slider fit the duration of each different tracks
@@ -181,6 +192,8 @@ void SM_MainWindow::on_DurationChanged(int duration)
     if (duration != -1)
     {
         ui.TimeLine->setMaximum(duration);
+
+        Timeline->on_DurationChange(duration);
     }
     
 }
@@ -210,13 +223,21 @@ void SM_MainWindow::on_playerProgress(int position)
 
     if (position == -1)
     {
+            // Move the temporary "placeholder" slider
         ui.TimeLine->setMaximum(1);
         ui.TimeLine->setSliderPosition(0);
+
+        Timeline->setPlayHeadPosition(0);
+
     }
     else
     {
+            // Same placeholder slider
         ui.TimeLine->setSliderPosition(position);
+
+        Timeline->setPlayHeadPosition(position);
     }
+
 }
 
 
@@ -291,3 +312,24 @@ void SM_MainWindow::on_actionPlayPause_triggered()
     }
 
 }
+
+
+        // Pitch and Time controls implementation
+
+    // Pitch slider slot
+void SM_MainWindow::on_sliderPitch_moved(int pitchPosition)
+{
+    player->updatePitch(pitchPosition);
+
+}
+
+    // Time Slider slot
+void SM_MainWindow::on_sliderTime_moved(int timePosition)
+{
+
+    double _timeRatio = ((double)timePosition / 100);
+
+    player->updateSpeed(_timeRatio);
+
+}
+
