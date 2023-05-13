@@ -33,7 +33,7 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
 
 
 
-        // Connection of the differrents elements
+        // Connection of the differrents UI elements
     connect(ui.actionOpen,  SIGNAL(triggered()),    
             this,           SLOT(on_OpenFile_triggered())   );
 
@@ -46,33 +46,30 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     connect(ui.s_Volume,SIGNAL(sliderMoved(int)),
             this,       SLOT(on_Volume_changed(int)) );
 
+    connect(ui.s_Pitch, SIGNAL(sliderMoved(int)),
+        this, SLOT(on_sliderPitch_moved(int)));
+
+    connect(ui.s_Time, SIGNAL(sliderMoved(int)),
+        this, SLOT(on_sliderTime_moved(int)));
+
         //QAction to play or pause the audio with the Space-Bar shortcut
     connect(ui.actionPlay_Pause, SIGNAL(triggered()),
             this, SLOT(on_actionPlayPause_triggered()));
 
 
-    /* //////////////////////////   */
-
+        // Signals from the audio player
     connect(player, SIGNAL(durationChanged(int)), 
             this,   SLOT(on_DurationChanged(int)) );
 
     connect(player, SIGNAL(readingPositionChanged(int)),
             this,   SLOT(on_playerProgress(int))  );
 
-    connect(ui.s_Pitch, SIGNAL(sliderMoved(int)),
-            this,   SLOT(on_sliderPitch_moved(int)) );
-
-    connect(ui.s_Time, SIGNAL(sliderMoved(int)),
-            this,      SLOT(on_sliderTime_moved(int)) );
-
-
-
     // Error signals handling
-        //Decoder error
+        // Decoder error
     connect(player, SIGNAL(audioDecodingError(QAudioDecoder::Error)),
             this,   SLOT(displayAudioDecodingError(QAudioDecoder::Error)) );
         
-        //Output error
+        // Output error
     connect(player, SIGNAL(audioOutputError(QAudio::Error)),
             this,   SLOT(displayAudioDeviceError(QAudio::Error)) );
     
@@ -191,8 +188,6 @@ void SM_MainWindow::on_DurationChanged(int duration)
 
     if (duration != -1)
     {
-        ui.TimeLine->setMaximum(duration);
-
         Timeline->on_DurationChange(duration);
     }
     
@@ -218,23 +213,14 @@ void SM_MainWindow::on_playerProgress(int position)
         // Called when the player progress.
         // Move the slider to have a "TimeLine", or progression bar.
 
-        // If an invalid position if emited, slider go back to 0. 
-        // else it follow the reading position.
-
     if (position == -1)
     {
-            // Move the temporary "placeholder" slider
-        ui.TimeLine->setMaximum(1);
-        ui.TimeLine->setSliderPosition(0);
-
+            // Reset the playhead to 0 when an inavlid position is sent.
+            // Typically hapend when the audio is over.
         Timeline->setPlayHeadPosition(0);
-
     }
     else
     {
-            // Same placeholder slider
-        ui.TimeLine->setSliderPosition(position);
-
         Timeline->setPlayHeadPosition(position);
     }
 

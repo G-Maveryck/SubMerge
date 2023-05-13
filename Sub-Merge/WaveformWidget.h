@@ -6,7 +6,7 @@
 #ifndef WAVEFORM_WIDGET_H
 #define WAVEFORM_WIDGET_H
 
-
+#include "DebugMacro.h"
 #include <QWidget>
 #include <QPainter>
 #include <QPen>
@@ -27,8 +27,10 @@ protected:
 
 
 private:
-    QPen* linePen;
+    FOR_DEBUG( QPen centralLinePen;)
 
 };
+
+
 
 #endif // !WAVEFORM_WIDGET_H

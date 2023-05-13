@@ -7,9 +7,10 @@
 
 
 
-#include <QFrame>
-#include <QBoxLayout>
+#include <qframe.h>
+#include <qboxlayout.h>
 #include <qline.h>
+#include <vector>
 
 #include "WaveformWidget.h"
 
@@ -25,6 +26,7 @@ public:
 
     void setPlayHeadPosition(int position);
     void on_DurationChange(int duration);
+    void setChannelsNumber(int newChannelsNumber);
 
 protected:
     virtual void paintEvent(QPaintEvent* event);
@@ -32,12 +34,14 @@ protected:
 
 
 private:
-    int scaleXFactor;     // Scale factor for positionning the playhead correctly
+    int m_scaleXFactor;       // Scale factor for positionning the playhead correctly
+    int m_channelsNumber;     // Number of channels of the current audio file played
 
     QVBoxLayout* m_layout;
     WaveformWidget* m_testWidget;   // test
+    std::vector<WaveformWidget> m_vectChannelWaveform;
     
-    QLine playHead;
+    QLine m_playHead;
 };
 
 #endif
