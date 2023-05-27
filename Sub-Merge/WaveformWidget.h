@@ -11,6 +11,8 @@
 #include <QPainter>
 #include <QPen>
 
+#include <QVector>
+
 
 class WaveformWidget :
     public QWidget
@@ -27,7 +29,9 @@ protected:
 
 
 private:
-    FOR_DEBUG( QPen centralLinePen;)
+    FOR_DEBUG(QPen centralLinePen;)
+
+       QVector<float> ChannelWaveform;
 
 };
 

@@ -46,7 +46,7 @@ public slots:
         // Timeline controls
     // void on_SliderPosition_moved(int newPosition);
     void on_playerProgress(int position);   // make the slider move as the player progress.
-
+    void on_userChangedPosition(int position);
 
 
 private:
@@ -64,7 +64,7 @@ private slots:
     void displayAudioDecodingError(QAudioDecoder::Error error);     // Prompt an error popup for an audio decoding error
     void displayAudioDeviceError(QAudio::Error error);  // Prompt an error popup for an audio device error
     
-    
+
 };
 
 

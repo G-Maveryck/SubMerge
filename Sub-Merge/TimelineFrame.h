@@ -31,9 +31,13 @@ public:
 protected:
     virtual void paintEvent(QPaintEvent* event);
     virtual void resizeEvent(QResizeEvent* event);
+    virtual void mousePressEvent(QMouseEvent* event);
 
+signals:
+    void userChangedPosition(int);
 
 private:
+    int m_Duration;
     int m_scaleXFactor;       // Scale factor for positionning the playhead correctly
     int m_channelsNumber;     // Number of channels of the current audio file played
 
@@ -42,6 +46,7 @@ private:
     std::vector<WaveformWidget> m_vectChannelWaveform;
     
     QLine m_playHead;
+
 };
 
 #endif

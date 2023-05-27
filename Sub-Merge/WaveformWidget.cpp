@@ -20,7 +20,7 @@ WaveformWidget::WaveformWidget(QWidget* parent) :
 
 }
 
-WaveformWidget::~WaveformWidget(){}
+WaveformWidget::~WaveformWidget() {}
 
 
 

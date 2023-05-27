@@ -31,7 +31,7 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     Timeline = new TimelineFrame(this);
     ui.gridLayout_2->addWidget(Timeline);
 
-
+    
 
         // Connection of the differrents UI elements
     connect(ui.actionOpen,  SIGNAL(triggered()),    
@@ -63,6 +63,10 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
 
     connect(player, SIGNAL(readingPositionChanged(int)),
             this,   SLOT(on_playerProgress(int))  );
+
+    connect(Timeline,   SIGNAL(userChangedPosition(int)),
+            this,       SLOT(on_userChangedPosition(int)) );
+
 
     // Error signals handling
         // Decoder error
@@ -226,6 +230,11 @@ void SM_MainWindow::on_playerProgress(int position)
 
 }
 
+void SM_MainWindow::on_userChangedPosition(int position)
+{
+    player->moveReadingPosition(position);
+
+}
 
 
 // Prompt an error popup for an audio decoding error
