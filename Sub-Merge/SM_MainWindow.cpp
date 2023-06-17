@@ -1,7 +1,28 @@
+/* --------------------------------------------------------------------------------------
+* Author : Gabriel Wulveryck.
+* Year : 2023
+* for any information, please contact : wulveryck.gabriel@gmail.com
+*
+* This file is a part of the SubMerge project.
+*
+* SubMerge is a free software, and is published under the terms of the GNU General Public Licence, version 3.
+* You can redistribute it and/or modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3 of the License,
+* or (at your option) any later version.
+* You should have recived a copy of the licence with the project.
+*
+* SubMerge is distributed as a contribution to the open-source and free software community,
+* in the hope it'll be usefull.
+* SubMerge is distributed without ANY WARRANTY, without even the implied warranty
+* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*
+* See the GNU General Public License for more details.
+*
+*-------------------------------------------------------------------------------------- */
+
 /*
-
+    Main Window class implementation.
 */
-
 
 #include "SM_MainWindow.h"
 #include "DebugMacro.h"
@@ -15,23 +36,16 @@
 #include <QDebug>
 
 
-
-
-SM_MainWindow::SM_MainWindow(QWidget* parent)
-    : QMainWindow(parent)
+SM_MainWindow::SM_MainWindow(QWidget* parent) :
+    QMainWindow(parent),
+    currentFileInfo(new QFileInfo),
+    player(new AudioPlayer(this)),
+    Timeline(new TimelineFrame(this))
 {
     ui.setupUi(this);
 
-    currentFileInfo = new QFileInfo();
-    player = new AudioPlayer(this);
-
-
     ui.l_trackName->setText("idle...");
-
-    Timeline = new TimelineFrame(this);
     ui.gridLayout_2->addWidget(Timeline);
-
-    
 
         // Connection of the differrents UI elements
     connect(ui.actionOpen,  SIGNAL(triggered()),    
@@ -46,11 +60,12 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     connect(ui.s_Volume,SIGNAL(sliderMoved(int)),
             this,       SLOT(on_Volume_changed(int)) );
 
-    connect(ui.s_Pitch, SIGNAL(sliderMoved(int)),
-        this, SLOT(on_sliderPitch_moved(int)));
+    connect(ui.s_Pitch, &QSlider::sliderMoved,
+            player, &AudioPlayer::updatePitch);
 
     connect(ui.s_Time, SIGNAL(sliderMoved(int)),
         this, SLOT(on_sliderTime_moved(int)));
+
 
         //QAction to play or pause the audio with the Space-Bar shortcut
     connect(ui.actionPlay_Pause, SIGNAL(triggered()),
@@ -64,9 +79,8 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     connect(player, SIGNAL(readingPositionChanged(int)),
             this,   SLOT(on_playerProgress(int))  );
 
-    connect(Timeline,   SIGNAL(userChangedPosition(int)),
-            this,       SLOT(on_userChangedPosition(int)) );
-
+    connect(Timeline, &TimelineFrame::userChangedPosition,
+            player, &AudioPlayer::moveReadingPosition);
 
     // Error signals handling
         // Decoder error
@@ -77,8 +91,6 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
     connect(player, SIGNAL(audioOutputError(QAudio::Error)),
             this,   SLOT(displayAudioDeviceError(QAudio::Error)) );
     
-
- 
 }
 
 SM_MainWindow::~SM_MainWindow()
@@ -87,11 +99,8 @@ SM_MainWindow::~SM_MainWindow()
 }
 
 
-
-
 // Private Slots definitions
 // Menu implementation.
-
 void SM_MainWindow::on_OpenFile_triggered()
 {
         // Open Dialog box, and gather information on the selected file.
@@ -106,18 +115,19 @@ void SM_MainWindow::on_OpenFile_triggered()
     } 
     
     currentFileInfo->setFile(QFileDialog::getOpenFileName(
-                                            this, 
-                                            tr("Open file"),
-                                            "C:/user/",
-                                            tr("All Files (*.*)")) );
+            this, 
+            tr("Open file"),
+            "C:/User/",
+            tr("All Files (*.*)")) );
    
+    QString tmp_canFilePath = currentFileInfo->canonicalFilePath();
+    Timeline->setNewFile(tmp_canFilePath);
  
         //Set label name on the track name.
     ui.l_trackName->setText(currentFileInfo->fileName());
-
+   
         // Set the player's source to selected file
     player->decodeFile(currentFileInfo->canonicalFilePath() );
-
     player->startPlaying();
 
    
@@ -168,8 +178,6 @@ void SM_MainWindow::on_PauseButton_Clicked()
 
 }
 
-
-
 // Volume control
 void SM_MainWindow::on_Volume_changed(int volumePos)
 {
@@ -180,9 +188,6 @@ void SM_MainWindow::on_Volume_changed(int volumePos)
 
 }
 
-
-
-
 // Progression slider implementation
 void SM_MainWindow::on_DurationChanged(int duration)
 {
@@ -192,25 +197,42 @@ void SM_MainWindow::on_DurationChanged(int duration)
 
     if (duration != -1)
     {
-        Timeline->on_DurationChange(duration);
+        Timeline->on_DurationChanged(duration);
     }
     
 }
 
-/*
-* 
-* Old method to move the playing position, with the QMediaPlayer.
-* It makes the program crash with the new player...
-* 
-* 
-void SM_MainWindow::on_SliderPosition_moved(int newPosition)
+// Space bar triggered
+void SM_MainWindow::on_actionPlayPause_triggered()
 {
-        // Called when the user move the slider to select a different time to play.
-    player->moveReadingPosition(5000);
+    switch (player->getStatus())
+    {
+        case AudioPlayer::Paused :
+        {
+            player->resumePlaying();
+            break;
+        }
+        case AudioPlayer::Playing :
+        {
+            player->pausePlaying();
+            break;
+        }
+
+        default:
+            break;
+    }
 
 }
 
-*/
+    // Time Slider slot
+void SM_MainWindow::on_sliderTime_moved(int timePosition)
+{
+
+    double _timeRatio = ((double)timePosition / 100);
+
+    player->updateSpeed(_timeRatio);
+
+}
 
 void SM_MainWindow::on_playerProgress(int position)
 {
@@ -227,12 +249,6 @@ void SM_MainWindow::on_playerProgress(int position)
     {
         Timeline->setPlayHeadPosition(position);
     }
-
-}
-
-void SM_MainWindow::on_userChangedPosition(int position)
-{
-    player->moveReadingPosition(position);
 
 }
 
@@ -287,44 +303,4 @@ void SM_MainWindow::displayAudioDeviceError(QAudio::Error error)
 }
 
 
-void SM_MainWindow::on_actionPlayPause_triggered()
-{
-    switch (player->getStatus())
-    {
-        case AudioPlayer::Paused :
-        {
-            player->resumePlaying();
-            break;
-        }
-        case AudioPlayer::Playing :
-        {
-            player->pausePlaying();
-            break;
-        }
-
-        default:
-            break;
-    }
-
-}
-
-
-        // Pitch and Time controls implementation
-
-    // Pitch slider slot
-void SM_MainWindow::on_sliderPitch_moved(int pitchPosition)
-{
-    player->updatePitch(pitchPosition);
-
-}
-
-    // Time Slider slot
-void SM_MainWindow::on_sliderTime_moved(int timePosition)
-{
-
-    double _timeRatio = ((double)timePosition / 100);
-
-    player->updateSpeed(_timeRatio);
-
-}
 

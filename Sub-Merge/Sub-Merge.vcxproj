@@ -105,6 +105,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Model\AudioFileProperties.cpp" />
     <ClCompile Include="TimelineFrame.cpp" />
     <ClCompile Include="WaveformWidget.cpp" />
     <QtRcc Include="SubMerge.qrc" />
@@ -130,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugMacro.h" />
+    <QtMoc Include="Model\AudioFileProperties.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -65,14 +65,17 @@ private:
 public:
   AudioPlayer(QObject *parent = nullptr); // Constructor
   ~AudioPlayer(); // Destructor
+
   void cancelDecoding(); // Cancel current file decoding
   void decodeFile(const QString &filename); // Decode an audio file
   AudioPlayer::Status getStatus() const; // Get current status
+  
   void moveReadingPosition(int position); // Move reading position. Parameter: position in milliseconds
   void pausePlaying(); // Pause audio playing
   void resumePlaying(); // Resume audio playing
   void startPlaying(); // Start audio playing
   void stopPlaying(); // Stop audio playing
+  
   void updateOptionUseR3Engine(bool option); // Sets pitch shifting engine
   void updateOptionFormantPreserved(bool option); // Change "formant preserved" option
   void updateOptionHighQuality(bool option); // Change "high quality" option
@@ -92,6 +95,7 @@ private:
 signals:
   void audioDecodingError(QAudioDecoder::Error); // This signal is emitted if an error occurs while tring to decode audio file
   void audioOutputError(QAudio::Error); // This signal is emitted if an error occurs while trying to access audio device
+  
   void durationChanged(int); // This signal is emitted each time the total duration of the file changes. Parameter: duration in milliseconds (-1 if no valid audio file loaded)
   void loadingProgressChanged(int); // This signal is emitted to indicate the current loading progress. Parameter: progress between 0 and 100
   void readingPositionChanged(int); // This signal is emitted each time the reading position changes. Parameter: position in milliseconds (-1 if no valid audio file loaded)
