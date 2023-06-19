@@ -43,8 +43,11 @@ TimelineFrame::TimelineFrame(QWidget* parent) :
 		m_scaleXFactor(1),				// Scale Factor set to 1, as default value
 		m_channelsNumber(0),
 		m_Duration(1),
+		// firstBufferProcessed(false),
+		// decodedIndex(0),
 		m_layout(new QVBoxLayout),
-		decoder(new QAudioDecoder(this)),
+		// decoder(new QAudioDecoder(this)),
+		// outputFormat(QAudioFormat()),
 		m_testWidget(new WaveformWidget(this))
 {
 	m_layout->setContentsMargins(0, 0, 0, 0);
@@ -56,7 +59,7 @@ TimelineFrame::TimelineFrame(QWidget* parent) :
 
 
 	m_layout->addWidget(m_testWidget);
-	
+
 }
 
 TimelineFrame::~TimelineFrame(){}
@@ -91,17 +94,6 @@ void TimelineFrame::on_DurationChanged(int duration)
 	QLOG("new scaleXFactor : " << m_scaleXFactor);
 	QLOG("*** Duration Changed Ended ***");
 	QLOG(" ");
-
-}
-
-void TimelineFrame::setChannelsNumber(int newChannelsNumber)
-{
-	m_channelsNumber = newChannelsNumber;
-}
-
-void TimelineFrame::setNewFile(const QString &newFilePath)
-{
-	
 
 }
 

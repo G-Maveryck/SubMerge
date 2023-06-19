@@ -7,12 +7,6 @@
     <ClCompile Include="SM_MainWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Libraries\SQLite\amalgamation\shell.c">
-      <Filter>thirdparty\SQLite3</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Libraries\SQLite\amalgamation\sqlite3.c">
-      <Filter>thirdparty\SQLite3</Filter>
-    </ClCompile>
     <ClCompile Include="TimelineFrame.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -22,7 +16,10 @@
     <ClCompile Include="Audio_player.cpp">
       <Filter>src\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Model\AudioFileProperties.cpp">
+    <ClCompile Include="Waveform_Builder.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioFileProperties.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,9 +35,6 @@
     </Filter>
     <Filter Include="thirdparty">
       <UniqueIdentifier>{688c2760-2d97-4e69-995d-e806454d8852}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="thirdparty\SQLite3">
-      <UniqueIdentifier>{e7ecaa7a-3569-4c31-a9d9-8ba01e62d587}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Model">
       <UniqueIdentifier>{d11f1403-fd6a-42b8-b799-289d7dd436f2}</UniqueIdentifier>
@@ -62,8 +56,8 @@
     <QtMoc Include="Audio_player.h">
       <Filter>src\Controller</Filter>
     </QtMoc>
-    <QtMoc Include="Model\AudioFileProperties.h">
-      <Filter>src\Model</Filter>
+    <QtMoc Include="Waveform_Builder.h">
+      <Filter>src</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +66,9 @@
   <ItemGroup>
     <ClInclude Include="DebugMacro.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioFileProperties.h">
+      <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

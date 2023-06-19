@@ -37,6 +37,7 @@
 
 #include "Audio_player.h"
 #include "TimelineFrame.h"
+#include "AudioFileProperties.h"
 
 
 class SM_MainWindow : public QMainWindow
@@ -57,7 +58,7 @@ public slots:
     void on_actionPlayPause_triggered();    // Play or pause the Audio when hitting space-bar
 
         //Controls for pitch and time
-    void on_sliderPitch_moved(int pitchPosition);
+    //void on_sliderPitch_moved(int pitchPosition);
     void on_sliderTime_moved(int timePosition);
         
         // Menu controls
@@ -71,7 +72,7 @@ public slots:
 private:
     Ui::SubMergeClass ui;
 
-    QFileInfo* currentFileInfo;
+    AudioFileProperties* m_currentFile;
     AudioPlayer* player;
 
     TimelineFrame* Timeline;

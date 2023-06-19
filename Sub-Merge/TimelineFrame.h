@@ -34,6 +34,7 @@
 #include <qboxlayout.h>
 #include <qline.h>
 #include <QAudiodecoder.h>
+#include <qfileinfo.h>
 #include <vector>
 
 #include "WaveformWidget.h"
@@ -50,8 +51,6 @@ public:
 
     void setPlayHeadPosition(int position);
     void on_DurationChanged(int duration);
-    void setChannelsNumber(int newChannelsNumber);
-    void setNewFile(const QString &newFilePath);
 
 protected:
     virtual void paintEvent(QPaintEvent* event);
@@ -65,12 +64,15 @@ private:
     int m_Duration;
     int m_scaleXFactor;       // Scale factor for positionning the playhead correctly
     int m_channelsNumber;     // Number of channels of the current audio file played
-   
+    
     QVBoxLayout* m_layout;
     QLine m_playHead;
     
-    QAudioDecoder* decoder;
-    std::vector<QAudioBuffer> decodedBuffer;
+    // bool firstBufferProcessed;
+    // int decodedIndex;
+    // QAudioDecoder* decoder;
+    // QAudioFormat outputFormat;
+    // std::vector<QAudioBuffer> m_decodedBuffers;
     std::vector<WaveformWidget> m_channelsWidget;
 
     WaveformWidget* m_testWidget;   // test

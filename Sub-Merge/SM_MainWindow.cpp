@@ -38,7 +38,7 @@
 
 SM_MainWindow::SM_MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    currentFileInfo(new QFileInfo),
+    m_currentFile(nullptr),
     player(new AudioPlayer(this)),
     Timeline(new TimelineFrame(this))
 {
@@ -60,7 +60,7 @@ SM_MainWindow::SM_MainWindow(QWidget* parent) :
     connect(ui.s_Volume,SIGNAL(sliderMoved(int)),
             this,       SLOT(on_Volume_changed(int)) );
 
-    connect(ui.s_Pitch, &QSlider::sliderMoved,
+    connect(ui.s_Pitch, &QAbstractSlider::sliderMoved,
             player, &AudioPlayer::updatePitch);
 
     connect(ui.s_Time, SIGNAL(sliderMoved(int)),
@@ -95,7 +95,7 @@ SM_MainWindow::SM_MainWindow(QWidget* parent) :
 
 SM_MainWindow::~SM_MainWindow()
 {
-
+    delete m_currentFile;
 }
 
 
@@ -114,20 +114,22 @@ void SM_MainWindow::on_OpenFile_triggered()
         player->cancelDecoding();
     } 
     
-    currentFileInfo->setFile(QFileDialog::getOpenFileName(
-            this, 
-            tr("Open file"),
-            "C:/User/",
-            tr("All Files (*.*)")) );
-   
-    QString tmp_canFilePath = currentFileInfo->canonicalFilePath();
-    Timeline->setNewFile(tmp_canFilePath);
+    if (m_currentFile != nullptr)
+    {
+        delete m_currentFile;
+    }
+    m_currentFile = new AudioFileProperties(QFileDialog::getOpenFileName(
+        this,
+        tr("Open file"),
+        tr("D:/"),
+        tr("All Files (*.*)")) );
+  
  
         //Set label name on the track name.
-    ui.l_trackName->setText(currentFileInfo->fileName());
+    ui.l_trackName->setText(m_currentFile->fileName());
    
         // Set the player's source to selected file
-    player->decodeFile(currentFileInfo->canonicalFilePath() );
+    player->decodeFile(m_currentFile->canonicalFilePath() );
     player->startPlaying();
 
    

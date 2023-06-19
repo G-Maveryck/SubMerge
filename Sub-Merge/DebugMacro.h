@@ -32,21 +32,21 @@
 
 	// Debug Macro for calling qDebug without an endl
 	// Macro is disabled in Release mode for Optimisation
-#ifdef SM_DEBUG
+#ifdef SUBM_DEBUG
 #define QLOG(x) qDebug() << x
 #endif // SM_DEBUG
 
-#ifdef SM_RELEASE
+#ifdef SUBM_RELEASE
 #define QLOG(x)
 #endif // SM_RELEASE
 
 
 	// Macro used for "encapsulating" code, and compiling it in debug mode only
-#ifdef SM_DEBUG
+#ifdef SUBM_DEBUG
 #define FOR_DEBUG(y) y
 #endif // SM_DEBUG
 
-#ifdef SM_RELEASE
+#ifdef SUBM_RELEASE
 #define FOR_DEBUG(y)
 #endif // SM_DEBUG
 

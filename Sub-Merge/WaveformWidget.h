@@ -22,8 +22,8 @@
 
 /*
     This is a widget made to display an audiowaveform.
-    This one is "generic". The WaveformWidget is instanciated for each
-    audio channel in the file currently played.
+    This one is "generic". The WaveformWidget is instanciated once for each
+    audio channel in the file currently focused on, and visualized.
     Each instance will then display the waveform of his own channel.
 */
 
@@ -35,8 +35,10 @@
 #include <QPainter>
 #include <QPen>
 #include <qaudiodecoder.h>
-
 #include <vector>
+
+#include "AudioFileProperties.h"
+
 
 class WaveformWidget :
     public QWidget
@@ -54,8 +56,6 @@ protected:
 
 
 private:
-    int duration;       // duration in ms
-    int totalSamples;       // Total number of samples per channels
     int samplesPerPixels;        // How many samples per pixels, understandable as "resolution on X axis"
 
     FOR_DEBUG(QPen centralLinePen;)
