@@ -21,40 +21,56 @@
 *-------------------------------------------------------------------------------------- */
 
 /*
-	See the "WaveformWidget.h" file for more information.
+
 */
 
-#include "WaveformWidget.h"
-#include <QPainter>
-#include <QSizePolicy>
+#ifndef PROCESS_THREAD_H
+#define PROCESS_THREAD_H
 
-#include "DebugMacro.h"
+#include <qobject.h>
+#include <qthread.h>
+#include <qaudiobuffer.h>
+#include <qaudiodecoder.h>
+#include <qaudioformat.h>
 
+#include <vector> 
 
-WaveformWidget::WaveformWidget(QWidget* parent) :
-	QWidget(parent)
+class ProcessThread :
+    public QThread
 {
-	setBaseSize(50, 20);
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    Q_OBJECT
 
-	
+public:
+    enum ProcessStatus
+    {
+        Empty,
+        Decoding,
+        Finished
+    };
 
-}
+    ProcessThread(QObject* parent = nullptr);
+    ~ProcessThread();
 
-WaveformWidget::~WaveformWidget() {}
+    // void setProperties(int ChannelCount, int sampleRate, QAudioFormat::ChannelConfig ChannelConfig);
+    void decodeFile(QString fileName);
+    ProcessStatus getProcessingStatus();
+    void abortDecoding();
+
+protected:
+    void processDecodedBuffer();
+
+private:
+    QAudioDecoder* m_decoder;
+    QAudioFormat m_targetFormat;
+
+    ProcessStatus m_ThreadStatus;
+
+    std::vector<std::vector<int>>* m_bufferPeakValues;
+
+signals:
+    void newDataAvailable();
+
+};
 
 
-
-void WaveformWidget::paintEvent(QPaintEvent* event)
-{
-	QPainter painter(this);
-
-	FOR_DEBUG(
-		painter.setPen(QPen(Qt::red, 1, Qt::SolidLine, Qt::RoundCap) );
-		painter.drawLine(0, (height() / 2), width(), (height() / 2));	// Draw central line for debug
-		painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap) );
-		painter.drawRect(0, 0, width() - 1, height() - 1);		// Draw bounding rect for debug
-		)
-	
-
-}
+#endif

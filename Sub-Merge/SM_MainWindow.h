@@ -30,14 +30,9 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_SubMerge.h"
 
-#include <QtMultimedia/QMediaPlayer>
-#include <QtMultimedia/QAudioOutput>
-#include <QFileInfo>
-#include <QAudio>
-
 #include "Audio_player.h"
 #include "TimelineFrame.h"
-#include "AudioFileProperties.h"
+#include "FocusedFile.h"
 
 
 class SM_MainWindow : public QMainWindow
@@ -68,14 +63,15 @@ public slots:
     // void on_SliderPosition_moved(int newPosition);
     void on_playerProgress(int position);   // make the slider move as the player progress.
 
+    void on_newFileSelected();
 
 private:
     Ui::SubMergeClass ui;
 
-    AudioFileProperties* m_currentFile;
     AudioPlayer* player;
-
+    QFileInfo* m_currentFile;
     TimelineFrame* Timeline;
+    FocusedFile* FocusFile;
     
 
 private slots:

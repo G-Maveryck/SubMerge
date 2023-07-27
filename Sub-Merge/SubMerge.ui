@@ -2,12 +2,15 @@
 <ui version="4.0">
  <class>SubMergeClass</class>
  <widget class="QMainWindow" name="SubMergeClass">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>1004</width>
-    <height>402</height>
+    <height>497</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -33,6 +36,11 @@
     <width>720</width>
     <height>350</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>SubMerge</string>

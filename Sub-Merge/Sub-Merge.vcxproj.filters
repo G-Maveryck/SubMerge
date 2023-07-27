@@ -14,13 +14,13 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="Audio_player.cpp">
-      <Filter>src\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Waveform_Builder.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="AudioFileProperties.cpp">
-      <Filter>src\Model</Filter>
+    <ClCompile Include="ProcessThread.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="FocusedFile.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -36,12 +36,6 @@
     <Filter Include="thirdparty">
       <UniqueIdentifier>{688c2760-2d97-4e69-995d-e806454d8852}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Model">
-      <UniqueIdentifier>{d11f1403-fd6a-42b8-b799-289d7dd436f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Controller">
-      <UniqueIdentifier>{c7bf2ab4-22de-4425-ba7f-40868bc391bc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SM_MainWindow.h">
@@ -54,9 +48,12 @@
       <Filter>src</Filter>
     </QtMoc>
     <QtMoc Include="Audio_player.h">
-      <Filter>src\Controller</Filter>
+      <Filter>src</Filter>
     </QtMoc>
-    <QtMoc Include="Waveform_Builder.h">
+    <QtMoc Include="ProcessThread.h">
+      <Filter>src</Filter>
+    </QtMoc>
+    <QtMoc Include="FocusedFile.h">
       <Filter>src</Filter>
     </QtMoc>
   </ItemGroup>
@@ -66,9 +63,6 @@
   <ItemGroup>
     <ClInclude Include="DebugMacro.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioFileProperties.h">
-      <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

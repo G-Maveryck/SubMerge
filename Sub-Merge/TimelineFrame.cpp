@@ -43,14 +43,13 @@ TimelineFrame::TimelineFrame(QWidget* parent) :
 		m_scaleXFactor(1),				// Scale Factor set to 1, as default value
 		m_channelsNumber(0),
 		m_Duration(1),
-		// firstBufferProcessed(false),
-		// decodedIndex(0),
+
 		m_layout(new QVBoxLayout),
-		// decoder(new QAudioDecoder(this)),
-		// outputFormat(QAudioFormat()),
-		m_testWidget(new WaveformWidget(this))
+		//m_testWidget(new WaveformWidget(this)),
+		m_channelsWidget(0)
 {
 	m_layout->setContentsMargins(0, 0, 0, 0);
+	m_layout->setSpacing(0);
 	setLayout(m_layout);
 	
 	setBaseSize(QSize(200, 200));
@@ -58,7 +57,7 @@ TimelineFrame::TimelineFrame(QWidget* parent) :
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
 
-	m_layout->addWidget(m_testWidget);
+	//m_layout->addWidget(m_testWidget);
 
 }
 
@@ -95,6 +94,17 @@ void TimelineFrame::on_DurationChanged(int duration)
 	QLOG("*** Duration Changed Ended ***");
 	QLOG(" ");
 
+}
+
+void TimelineFrame::setNewProperties(int channelNmb)
+{
+	m_channelsNumber = channelNmb;
+
+	for (int i = 0; i < m_channelsNumber; i++)
+	{
+		m_channelsWidget.push_back(new WaveformWidget(this));
+		m_layout->addWidget(m_channelsWidget.at(i));
+	}
 }
 
 

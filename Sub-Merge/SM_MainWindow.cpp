@@ -26,7 +26,10 @@
 
 #include "SM_MainWindow.h"
 #include "DebugMacro.h"
+#include "Audio_player.h"
+#include "TimelineFrame.h"
 
+#include <qobject.h>
 #include <QPushButton>
 
 #include <QFileDialog>
@@ -39,10 +42,16 @@
 SM_MainWindow::SM_MainWindow(QWidget* parent) :
     QMainWindow(parent),
     m_currentFile(nullptr),
+    FocusFile(new FocusedFile(this)),
     player(new AudioPlayer(this)),
     Timeline(new TimelineFrame(this))
 {
     ui.setupUi(this);
+
+    setWindowFlags(windowFlags() | Qt::CustomizeWindowHint |
+        Qt::WindowMinimizeButtonHint |
+        Qt::WindowMaximizeButtonHint |
+        Qt::WindowCloseButtonHint);
 
     ui.l_trackName->setText("idle...");
     ui.gridLayout_2->addWidget(Timeline);
@@ -118,13 +127,16 @@ void SM_MainWindow::on_OpenFile_triggered()
     {
         delete m_currentFile;
     }
-    m_currentFile = new AudioFileProperties(QFileDialog::getOpenFileName(
+    m_currentFile = new QFileInfo(QFileDialog::getOpenFileName(
         this,
         tr("Open file"),
         tr("D:/"),
         tr("All Files (*.*)")) );
   
- 
+    FocusFile->setNewFile(m_currentFile->canonicalFilePath());
+    
+    Timeline->setNewProperties(FocusFile->getAudioProperties()->channels());
+
         //Set label name on the track name.
     ui.l_trackName->setText(m_currentFile->fileName());
    
@@ -252,6 +264,11 @@ void SM_MainWindow::on_playerProgress(int position)
         Timeline->setPlayHeadPosition(position);
     }
 
+}
+
+void SM_MainWindow::on_newFileSelected()
+{
+    
 }
 
 

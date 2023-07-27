@@ -21,47 +21,55 @@
 *-------------------------------------------------------------------------------------- */
 
 /*
-    This is a widget made to display an audiowaveform.
-    This one is "generic". The WaveformWidget is instanciated once for each
-    audio channel in the file currently focused on, and visualized.
-    Each instance will then display the waveform of his own channel.
+
 */
 
-#ifndef WAVEFORM_WIDGET_H
-#define WAVEFORM_WIDGET_H
+#ifndef FOCUSED_FILE_H
+#define FOCUSED_FILE_H
 
-#include "DebugMacro.h"
-#include <QWidget>
-#include <QPainter>
-#include <QPen>
-#include <qaudiodecoder.h>
+#include <QObject>
+#include <taglib/fileref.h>
+#include <taglib/audioproperties.h>
+#include <QFileInfo>
+#include <QAudioBuffer>
 #include <vector>
+#include <list>
+
+#include "ProcessThread.h"
 
 
-
-class WaveformWidget :
-    public QWidget
+class FocusedFile : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    WaveformWidget(QWidget* parent = (QWidget*)nullptr);
-    ~WaveformWidget();
+	FocusedFile(QObject* parent = nullptr);
+	~FocusedFile();
 
-
+	void setNewFile(QString filePath);
+	TagLib::AudioProperties* getAudioProperties();
+	
+	void cacheDecodedBuffer(QAudioBuffer newBuffer);
+	void cacheWaveformData();
+	
 protected:
-    virtual void paintEvent(QPaintEvent* event);
-
+	void clearCache();
 
 private:
-    int samplesPerPixels;        // How many samples per pixels, understandable as "resolution on X axis"
+	ProcessThread* m_Processor;		// Used to decode the audiofile and process waveform drawing
+	QFileInfo* m_FileInfo;		// Used to get the usual file informations
+	TagLib::FileRef* m_AudioFileInfo;		// Used to extract the audio specific file info
 
-    FOR_DEBUG(QPen centralLinePen;)
+	std::vector<QAudioBuffer> cachedBuffers;		// Store the decoded audiobuffers
+	std::vector<std::vector<int>> ChannelWaveformData;		// Store the waveform information used for drawing.
 
-    std::vector<QRect> m_WaveBars;
-    
+	// Properties
+	bool m_hasCachedData;
+	
+signals:
+	void newDataCached();
+
 };
 
 
-
-#endif // !WAVEFORM_WIDGET_H
+#endif // !FOCUSED_FILE_H

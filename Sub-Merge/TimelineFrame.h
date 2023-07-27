@@ -33,7 +33,7 @@
 #include <qframe.h>
 #include <qboxlayout.h>
 #include <qline.h>
-#include <QAudiodecoder.h>
+#include <qaudiodecoder.h>
 #include <qfileinfo.h>
 #include <vector>
 
@@ -51,6 +51,7 @@ public:
 
     void setPlayHeadPosition(int position);
     void on_DurationChanged(int duration);
+    void setNewProperties(int channelNmb);
 
 protected:
     virtual void paintEvent(QPaintEvent* event);
@@ -68,14 +69,9 @@ private:
     QVBoxLayout* m_layout;
     QLine m_playHead;
     
-    // bool firstBufferProcessed;
-    // int decodedIndex;
-    // QAudioDecoder* decoder;
-    // QAudioFormat outputFormat;
-    // std::vector<QAudioBuffer> m_decodedBuffers;
-    std::vector<WaveformWidget> m_channelsWidget;
+    std::vector<WaveformWidget*> m_channelsWidget;
 
-    WaveformWidget* m_testWidget;   // test
+    //WaveformWidget* m_testWidget;   // test
 };
 
 #endif
