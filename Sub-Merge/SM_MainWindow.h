@@ -63,7 +63,8 @@ public slots:
     // void on_SliderPosition_moved(int newPosition);
     void on_playerProgress(int position);   // make the slider move as the player progress.
 
-    void on_newFileSelected();
+protected:
+    virtual void resizeEvent(QResizeEvent* event);
 
 private:
     Ui::SubMergeClass ui;

@@ -134,9 +134,10 @@ void SM_MainWindow::on_OpenFile_triggered()
         tr("All Files (*.*)")) );
   
     FocusFile->setNewFile(m_currentFile->canonicalFilePath());
-    
     Timeline->setNewProperties(FocusFile->getAudioProperties()->channels());
-
+    FocusFile->setWaveformWidth(Timeline->getWaveformWidth());
+    FocusFile->startDecoding();
+        
         //Set label name on the track name.
     ui.l_trackName->setText(m_currentFile->fileName());
    
@@ -266,9 +267,10 @@ void SM_MainWindow::on_playerProgress(int position)
 
 }
 
-void SM_MainWindow::on_newFileSelected()
+
+void SM_MainWindow::resizeEvent(QResizeEvent* event)
 {
-    
+    FocusFile->setWaveformWidth(Timeline->getWaveformWidth());
 }
 
 

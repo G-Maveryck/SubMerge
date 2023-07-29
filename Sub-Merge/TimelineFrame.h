@@ -52,6 +52,7 @@ public:
     void setPlayHeadPosition(int position);
     void on_DurationChanged(int duration);
     void setNewProperties(int channelNmb);
+    int getWaveformWidth();
 
 protected:
     virtual void paintEvent(QPaintEvent* event);

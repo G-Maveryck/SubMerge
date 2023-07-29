@@ -58,3 +58,4 @@ void WaveformWidget::paintEvent(QPaintEvent* event)
 	
 
 }
+

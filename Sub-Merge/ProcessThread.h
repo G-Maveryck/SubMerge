@@ -53,11 +53,14 @@ public:
 
     // void setProperties(int ChannelCount, int sampleRate, QAudioFormat::ChannelConfig ChannelConfig);
     void decodeFile(QString fileName);
-    ProcessStatus getProcessingStatus();
     void abortDecoding();
+    ProcessStatus getProcessingStatus();
+    void setWidth(int _width);
+    void setLength(int _fileSamples);
 
 protected:
     void processDecodedBuffer();
+    inline void updateChunkSize();
 
 private:
     QAudioDecoder* m_decoder;
@@ -65,7 +68,11 @@ private:
 
     ProcessStatus m_ThreadStatus;
 
-    std::vector<std::vector<int>>* m_bufferPeakValues;
+    std::vector<std::vector<int>> m_WaveformChunks;
+
+    int m_chunkSize;        // numbers of sample per waveform "blocks" (pixels, or block of x pixels)
+    int m_waveformWidth;
+    int m_totalSamples;
 
 signals:
     void newDataAvailable();

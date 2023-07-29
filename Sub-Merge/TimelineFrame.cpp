@@ -43,7 +43,6 @@ TimelineFrame::TimelineFrame(QWidget* parent) :
 		m_scaleXFactor(1),				// Scale Factor set to 1, as default value
 		m_channelsNumber(0),
 		m_Duration(1),
-
 		m_layout(new QVBoxLayout),
 		//m_testWidget(new WaveformWidget(this)),
 		m_channelsWidget(0)
@@ -52,8 +51,8 @@ TimelineFrame::TimelineFrame(QWidget* parent) :
 	m_layout->setSpacing(0);
 	setLayout(m_layout);
 	
-	setBaseSize(QSize(200, 200));
-	setMinimumSize(QSize(600, 200));
+	setBaseSize(200, 300);
+	setMinimumSize(600, 300);
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
 
@@ -100,12 +99,34 @@ void TimelineFrame::setNewProperties(int channelNmb)
 {
 	m_channelsNumber = channelNmb;
 
+		// Check for the first call of this method.
+		// Clear the vector and free the memory if previous widgets were instensiated.
+	if (!m_channelsWidget.empty())
+	{
+		for (int i = 0; i < m_channelsWidget.size(); i++)
+		{
+			delete m_channelsWidget.at(i);
+		}
+		m_channelsWidget.clear();
+	}
+
+		// Create one Widget per channel, and add it in the Timeline layout.
 	for (int i = 0; i < m_channelsNumber; i++)
 	{
 		m_channelsWidget.push_back(new WaveformWidget(this));
 		m_layout->addWidget(m_channelsWidget.at(i));
 	}
 }
+
+int TimelineFrame::getWaveformWidth()
+{
+	if (m_channelsWidget.size() > 0)
+	{
+		return m_channelsWidget.at(0)->width();
+	}
+}
+
+
 
 
 	// Implementation of event handling methods.

@@ -31,9 +31,13 @@
 
 ProcessThread::ProcessThread(QObject* parent) :
 		QThread(parent),
-		m_decoder(new QAudioDecoder),
+		m_decoder(new QAudioDecoder(this)),
 		m_ThreadStatus(ProcessStatus::Empty),
-		m_targetFormat()
+		m_targetFormat(),
+	/********** INT **************/
+		m_chunkSize(0),
+		m_waveformWidth(0),
+		m_totalSamples(0)
 {
 	m_targetFormat.setChannelCount(2);
 	m_targetFormat.setChannelConfig(QAudioFormat::ChannelConfigStereo);
@@ -47,10 +51,15 @@ ProcessThread::~ProcessThread()
 {
 }
 
+
+
 void ProcessThread::decodeFile(QString fileName)
 {
 	if (m_ThreadStatus!= ProcessStatus::Decoding)
 	{
+		m_chunkSize = m_totalSamples / m_waveformWidth;
+		QLOG("chunkSize = " << m_chunkSize << "samples per x Pixels");
+
 		m_decoder->setSource(QUrl::fromLocalFile(fileName) );
 
 		m_ThreadStatus = Decoding;
@@ -73,20 +82,46 @@ void ProcessThread::abortDecoding()
 		return;
 	}
 	m_decoder->stop();
-	disconnect(m_decoder, &QAudioDecoder::bufferReady, 
+	disconnect(	m_decoder, &QAudioDecoder::bufferReady, 
 				this, &ProcessThread::processDecodedBuffer);
 
 	m_ThreadStatus = Empty;
+}
+
+void ProcessThread::setWidth(int _width)
+{
+	m_waveformWidth = _width;
+	QLOG("Waveform Width = " << m_waveformWidth);
+
+	updateChunkSize();
+}
+
+void ProcessThread::setLength(int _fileSamples)
+{
+	m_totalSamples = _fileSamples;
+	QLOG("Total Samples = " << m_totalSamples);
+	
+	updateChunkSize();
 }
 
 void ProcessThread::processDecodedBuffer()
 {
 	FOR_DEBUG(
 		static int callNmb(0);
-		QLOG("Buffer Received" << " #" << callNmb);
+		QLOG("Buffer Received #" << callNmb);
 		callNmb++;
 	)
 
 	QAudioBuffer currentBuffer = m_decoder->read();
 	
+}
+
+inline void ProcessThread::updateChunkSize()
+{
+	if (m_waveformWidth > 0 && m_totalSamples > 0)
+	{
+		m_chunkSize = m_totalSamples / m_waveformWidth;
+		QLOG("new Chunk Size = " << m_chunkSize);
+	}
+	QLOG("** ChunkSize Updated ! **");
 }

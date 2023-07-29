@@ -58,19 +58,36 @@ void FocusedFile::setNewFile(QString filePath)
 
 	m_FileInfo->setFile(filePath);
 
-	// delete m_AudioFileInfo;
+	if (m_AudioFileInfo != nullptr)
+	{
+		delete m_AudioFileInfo;
+	}
 	m_AudioFileInfo = new TagLib::FileRef(
 			filePath.toStdString().c_str(),
 			true,
 			TagLib::AudioProperties::Accurate );
-			
+	
+	// Setting thread properties for decoding and building Waveform
+	m_Processor->setLength(
+		(m_AudioFileInfo->audioProperties()->sampleRate()
+			*
+		(m_AudioFileInfo->audioProperties()->lengthInMilliseconds() / 1000) )
+		);
+
+
 	// Decoding stage
-	m_Processor->decodeFile(filePath);
+	// m_Processor->decodeFile(filePath);
+
 }
 
 TagLib::AudioProperties* FocusedFile::getAudioProperties()
 {
 	return m_AudioFileInfo->audioProperties();
+}
+
+void FocusedFile::startDecoding()
+{
+	m_Processor->decodeFile(m_FileInfo->canonicalFilePath());
 }
 
 void FocusedFile::cacheDecodedBuffer(QAudioBuffer newBuffer)
@@ -79,6 +96,11 @@ void FocusedFile::cacheDecodedBuffer(QAudioBuffer newBuffer)
 
 void FocusedFile::cacheWaveformData()
 {
+}
+
+void FocusedFile::setWaveformWidth(int width)
+{
+	m_Processor->setWidth(width);
 }
 
 

@@ -48,9 +48,12 @@ public:
 
 	void setNewFile(QString filePath);
 	TagLib::AudioProperties* getAudioProperties();
-	
+	void startDecoding();
+
 	void cacheDecodedBuffer(QAudioBuffer newBuffer);
 	void cacheWaveformData();
+
+	void setWaveformWidth(int width);
 	
 protected:
 	void clearCache();
