@@ -278,11 +278,14 @@ void AudioPlayer::fillAudioBuffer()
   int bytes_needed = audio_output->bytesFree();
   int bytes_processed = 0;
 
-  while (bytes_processed < bytes_needed) {
-    while (temp_buffer->atEnd()){
-      if (reading_index >= nb_audio_buffers) {
-	no_more_data = true;
-	return;
+  while (bytes_processed < bytes_needed)
+  {
+    while (temp_buffer->atEnd())
+    {
+      if (reading_index >= nb_audio_buffers) 
+      {
+	    no_more_data = true;
+	    return;
       }
       
       const QAudioBuffer &current_audio_buffer = decoded_samples->at(reading_index);
@@ -292,48 +295,66 @@ void AudioPlayer::fillAudioBuffer()
       unsigned int nb_input_frames = static_cast<unsigned int>(current_audio_buffer.frameCount());
       unsigned int nb_channels = static_cast<unsigned int>(target_format.channelCount());
       float **stretcher_input = new float*[nb_channels];
-      for (unsigned int i = 0; i < nb_channels; i++){
-	stretcher_input[i] = new float[nb_input_frames];
-	for (unsigned int j = 0; j < nb_input_frames; j++)
-	  stretcher_input[i][j] = audio_buffer_data[(nb_channels * j) + i];
-      }
-      stretcher->process(stretcher_input, static_cast<size_t>(nb_input_frames), reading_index == nb_audio_buffers);
+
       for (unsigned int i = 0; i < nb_channels; i++)
-	delete[] stretcher_input[i];
+      {
+	    stretcher_input[i] = new float[nb_input_frames];
+        for (unsigned int j = 0; j < nb_input_frames; j++) 
+        {
+	        stretcher_input[i][j] = audio_buffer_data[(nb_channels * j) + i];
+        }
+      }
+      
+      stretcher->process(stretcher_input, static_cast<size_t>(nb_input_frames), reading_index == nb_audio_buffers);
+      
+      for (unsigned int i = 0; i < nb_channels; i++)
+      {
+	    delete[] stretcher_input[i];
+      }
       delete[] stretcher_input;
 
       unsigned int nb_output_frames = static_cast<unsigned int>(stretcher->available());
 
-      if (nb_output_frames > 0) {
-	temp_buffer->close();
+      if (nb_output_frames > 0) 
+      {
+	    temp_buffer->close();
 	
-	float **stretcher_output = new float*[nb_channels];
-	for (unsigned int i = 0; i < nb_channels; i++)
-	  stretcher_output[i] = new float[nb_output_frames];
-	nb_output_frames = static_cast<unsigned int>(stretcher->retrieve(stretcher_output, static_cast<size_t>(nb_output_frames)));
+	    float **stretcher_output = new float*[nb_channels];
+        for (unsigned int i = 0; i < nb_channels; i++) 
+        {
+	      stretcher_output[i] = new float[nb_output_frames];
+        }
 
-	unsigned int nb_output_samples = nb_output_frames * nb_channels;
-	qint16 *output_samples = new qint16[nb_output_samples];
-	for (unsigned int i = 0; i < nb_channels; i++){
-	  for (unsigned int j = 0; j < nb_output_frames; j++){
-	    float sample = stretcher_output[i][j];
-	    unsigned int index = (nb_channels * j) + i;
-	    if (sample > 1.0f)
-	      output_samples[index] = qint16(32767);
-	    else if (sample < -1.0f)
-	      output_samples[index] = qint16(-32767);
-	    else
-	      output_samples[index] = static_cast<qint16>(qRound(sample * 32767.0f));
-	  }
-	  delete[] stretcher_output[i];
-	}
-	delete[] stretcher_output;
+	    nb_output_frames = static_cast<unsigned int>(stretcher->retrieve(stretcher_output, static_cast<size_t>(nb_output_frames)));
 
-	temp_buffer->setData(reinterpret_cast<char*>(output_samples), static_cast<int>(sizeof(qint16) * nb_output_samples));
-	delete[] output_samples;
+	    unsigned int nb_output_samples = nb_output_frames * nb_channels;
+	    qint16 *output_samples = new qint16[nb_output_samples];
+
+	    for (unsigned int i = 0; i < nb_channels; i++)
+        {
+	      for (unsigned int j = 0; j < nb_output_frames; j++)
+          {
+	        float sample = stretcher_output[i][j];
+	        unsigned int index = (nb_channels * j) + i;
+            if (sample > 1.0f) {
+	          output_samples[index] = qint16(32767);
+            }
+            else if (sample < -1.0f) {
+	          output_samples[index] = qint16(-32767);
+            }
+            else {
+	          output_samples[index] = static_cast<qint16>(qRound(sample * 32767.0f));
+            }
+	      }
+	      delete[] stretcher_output[i];
+	    }
+	    delete[] stretcher_output;
+
+	    temp_buffer->setData(reinterpret_cast<char*>(output_samples), static_cast<int>(sizeof(qint16) * nb_output_samples));
+	    delete[] output_samples;
       
-	temp_buffer->open(QIODevice::ReadOnly);
-	temp_buffer->seek(0);
+	    temp_buffer->open(QIODevice::ReadOnly);
+	    temp_buffer->seek(0);
       }
 
       emit readingPositionChanged(static_cast<int>(current_audio_buffer.startTime() / 1000));
@@ -342,7 +363,9 @@ void AudioPlayer::fillAudioBuffer()
     qint64 size_to_write = qMin(temp_buffer->size() - temp_buffer->pos(), static_cast<qint64>(bytes_needed - bytes_processed));
     qint64 actually_written = output_buffer->write(temp_buffer->read(size_to_write));
     bytes_processed += static_cast<int>(actually_written);
-    if (actually_written < size_to_write) { // Should not happen, but does happen on Windows 10!
+    
+    if (actually_written < size_to_write) 
+    { // Should not happen, but does happen on Windows 10!
       temp_buffer->seek(temp_buffer->pos() - size_to_write + actually_written);
       return;
     }

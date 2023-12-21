@@ -26,25 +26,23 @@
 
 #include "ProcessThread.h"
 #include <qurl.h>
-
+#include <qaudiobuffer.h>
 #include "DebugMacro.h"
 
 ProcessThread::ProcessThread(QObject* parent) :
-		QThread(parent),
-		m_decoder(new QAudioDecoder(this)),
-		m_ThreadStatus(ProcessStatus::Empty),
-		m_targetFormat(),
-	/********** INT **************/
-		m_chunkSize(0),
-		m_waveformWidth(0),
-		m_totalSamples(0)
+		QThread(parent)
+		, m_decoder(new QAudioDecoder(this))
+		, m_ThreadStatus(ProcessStatus::Empty)
+		//m_targetFormat()
 {
+	/*
 	m_targetFormat.setChannelCount(2);
 	m_targetFormat.setChannelConfig(QAudioFormat::ChannelConfigStereo);
 	m_targetFormat.setSampleRate(44000);
 	m_targetFormat.setSampleFormat(QAudioFormat::SampleFormat::Int32);
 
 	m_decoder->setAudioFormat(m_targetFormat);
+	*/
 }
 
 ProcessThread::~ProcessThread()
@@ -55,11 +53,8 @@ ProcessThread::~ProcessThread()
 
 void ProcessThread::decodeFile(QString fileName)
 {
-	if (m_ThreadStatus!= ProcessStatus::Decoding)
+	if (m_ThreadStatus != ProcessStatus::Decoding)
 	{
-		m_chunkSize = m_totalSamples / m_waveformWidth;
-		QLOG("chunkSize = " << m_chunkSize << "samples per x Pixels");
-
 		m_decoder->setSource(QUrl::fromLocalFile(fileName) );
 
 		m_ThreadStatus = Decoding;
@@ -88,22 +83,6 @@ void ProcessThread::abortDecoding()
 	m_ThreadStatus = Empty;
 }
 
-void ProcessThread::setWidth(int _width)
-{
-	m_waveformWidth = _width;
-	QLOG("Waveform Width = " << m_waveformWidth);
-
-	updateChunkSize();
-}
-
-void ProcessThread::setLength(int _fileSamples)
-{
-	m_totalSamples = _fileSamples;
-	QLOG("Total Samples = " << m_totalSamples);
-	
-	updateChunkSize();
-}
-
 void ProcessThread::processDecodedBuffer()
 {
 	FOR_DEBUG(
@@ -116,12 +95,27 @@ void ProcessThread::processDecodedBuffer()
 	
 }
 
-inline void ProcessThread::updateChunkSize()
+/*
+std::vector<QAudioBuffer> ProcessThread::deInterleavedBuffer(const QAudioBuffer& interleavedBuffer)
 {
-	if (m_waveformWidth > 0 && m_totalSamples > 0)
+	int channelsNmb = interleavedBuffer.format().channelCount();
+	int channelsOffset = interleavedBuffer.format().bytesPerSample();
+	int frameCount = interleavedBuffer.frameCount();
+
+	std::vector<QByteArray> tmp_Channels(channelsNmb);
+
+	for (int i = 0; i < channelsNmb; i++)
 	{
-		m_chunkSize = m_totalSamples / m_waveformWidth;
-		QLOG("new Chunk Size = " << m_chunkSize);
+		for (int j = 0; j < frameCount; j+=channelsOffset)
+		{
+			
+		}
+
+
 	}
-	QLOG("** ChunkSize Updated ! **");
+
+
+	std::vector<QAudioBuffer> splittedBuffers(channelsNmb, QAudioBuffer(QByteArray()));
+	// return std::vector<QAudioBuffer>();
 }
+*/

@@ -51,24 +51,25 @@ public:
 	void startDecoding();
 
 	void cacheDecodedBuffer(QAudioBuffer newBuffer);
-	void cacheWaveformData();
 
-	void setWaveformWidth(int width);
+	
 	
 protected:
-	void clearCache();
+	void setCurrentAudioFormat();
 
 private:
+	// Members
 	ProcessThread* m_Processor;		// Used to decode the audiofile and process waveform drawing
+	QAudioFormat* m_OutputFormat;
+	
 	QFileInfo* m_FileInfo;		// Used to get the usual file informations
 	TagLib::FileRef* m_AudioFileInfo;		// Used to extract the audio specific file info
 
-	std::vector<QAudioBuffer> cachedBuffers;		// Store the decoded audiobuffers
-	std::vector<std::vector<int>> ChannelWaveformData;		// Store the waveform information used for drawing.
-
+	std::list<QAudioBuffer*> decodedBuffers;
 	// Properties
-	bool m_hasCachedData;
 	
+	
+
 signals:
 	void newDataCached();
 

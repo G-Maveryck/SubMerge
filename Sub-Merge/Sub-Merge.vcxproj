@@ -32,12 +32,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019</QtInstall>
+    <QtInstall>6.6.1_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;multimedia</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019</QtInstall>
+    <QtInstall>6.6.1_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets;multimedia</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -61,18 +61,18 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalLibraryDirectories>C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;C:\Libraries\SQLite\win64_x64;C:\Libraries\taglib\bin;C:\Libraries\taglib\lib;C:\Libraries\rubberband\lib;C:\Libraries\rubberband\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);sqlite3.lib;tag.lib;rubberband.lib;rubberband-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Libraries\kfr\lib;C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;C:\Libraries\SQLite\win64_x64;C:\Libraries\taglib\bin;C:\Libraries\taglib\lib;C:\Libraries\rubberband\lib;C:\Libraries\rubberband\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);sqlite3.lib;tag.lib;rubberband.lib;rubberband-static.lib;kfr_dft.lib;kfr_io.lib</AdditionalDependencies>
     </Link>
     <ClCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\rubberband\include;C:\Libraries\taglib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\rubberband\include;C:\Libraries\taglib\include;C:\Libraries\kfr\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SUBM_DEBUG;$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);sqlite3.lib;tag.lib;rubberband.lib;rubberband-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;C:\Libraries\SQLite\win64_x64;C:\Libraries\taglib\bin;C:\Libraries\taglib\lib;C:\Libraries\rubberband\lib;C:\Libraries\rubberband\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);$(Qt_LIBS_);sqlite3.lib;tag.lib;rubberband.lib;rubberband-static.lib;kfr_dft.lib;kfr_io.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Libraries\kfr\lib;C:\Qt\6.4.2\msvc2019_64\bin;C:\Qt\6.4.2\msvc2019_64\lib;C:\Libraries\SQLite\win64_x64;C:\Libraries\taglib\bin;C:\Libraries\taglib\lib;C:\Libraries\rubberband\lib;C:\Libraries\rubberband\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(Qt_INCLUDEPATH_);C:\Libraries\SQLite\amalgamation;C:\Libraries\taglib\include;C:\Libraries\rubberband\include</AdditionalIncludeDirectories>
