@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClCompile Include="FocusedFile.cpp" />
     <ClCompile Include="ProcessThread.cpp" />
+    <ClCompile Include="SM_MainWindow_UI.cpp" />
     <ClCompile Include="TimelineFrame.cpp" />
     <ClCompile Include="WaveformWidget.cpp" />
     <QtRcc Include="SubMerge.qrc" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugMacro.h" />
+    <ClInclude Include="SM_MainWindow_UI.h" />
     <QtMoc Include="FocusedFile.h" />
     <QtMoc Include="ProcessThread.h" />
   </ItemGroup>

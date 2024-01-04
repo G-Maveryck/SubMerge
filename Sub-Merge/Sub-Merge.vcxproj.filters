@@ -22,6 +22,9 @@
     <ClCompile Include="FocusedFile.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="SM_MainWindow_UI.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SubMerge.qrc" />
@@ -62,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugMacro.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="SM_MainWindow_UI.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
