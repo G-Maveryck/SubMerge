@@ -39,11 +39,14 @@
 #include <QDebug>
 
 
-SM_MainWindow::SM_MainWindow(QWidget* parent) 
+SM_MainWindow::SM_MainWindow(QWidget* parent)
     :QMainWindow(parent)
-    ,view(this)
+    , view(this)
+    , prefDial(nullptr)
     
 {
+    connect(view.MenuBar->prefAct, &QAction::trigger,
+        this, &SM_MainWindow::on_prefAct_trigger);
     // ui.setupUi(this);
     /*
     setWindowFlags(windowFlags() | Qt::CustomizeWindowHint |
@@ -59,5 +62,9 @@ SM_MainWindow::~SM_MainWindow()
     
 }
 
-
+void SM_MainWindow::on_prefAct_trigger()
+{
+    prefDial = new PrefDialog(this);
+    prefDial->show();
+}
 

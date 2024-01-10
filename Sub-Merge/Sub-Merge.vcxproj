@@ -107,6 +107,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FocusedFile.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="PrefDialog.cpp" />
     <ClCompile Include="ProcessThread.cpp" />
     <ClCompile Include="SM_MainWindow_UI.cpp" />
     <ClCompile Include="TimelineFrame.cpp" />
@@ -132,6 +134,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugMacro.h" />
+    <QtMoc Include="MainMenu.h" />
+    <ClInclude Include="PrefDialog.h" />
     <ClInclude Include="SM_MainWindow_UI.h" />
     <QtMoc Include="FocusedFile.h" />
     <QtMoc Include="ProcessThread.h" />

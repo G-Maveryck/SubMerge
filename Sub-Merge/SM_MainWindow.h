@@ -30,6 +30,7 @@
 #include <QtWidgets/QMainWindow>
 //#include "ui_SubMerge.h"
 #include "SM_MainWindow_UI.h"
+#include "PrefDialog.h"
 
 #include "Audio_player.h"
 #include "TimelineFrame.h"
@@ -44,11 +45,14 @@ public:
     SM_MainWindow(QWidget *parent = nullptr);    // Constructeur
     ~SM_MainWindow();                            // Destructeur
 
-
+protected:
+    void on_prefAct_trigger();
 
 private:
     // Ui::SubMergeClass ui;
     SM_MainWindow_UI view;
+    PrefDialog* prefDial;
+
 
 };
 

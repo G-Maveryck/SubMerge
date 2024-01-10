@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    SM_MainWindow_Controller MainWindow;
+    SM_MainWindow MainWindow;
     MainWindow.show();
 
     return app.exec();

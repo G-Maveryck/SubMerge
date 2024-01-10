@@ -23,7 +23,13 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="SM_MainWindow_UI.cpp">
-      <Filter>src</Filter>
+      <Filter>src\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>src\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="PrefDialog.cpp">
+      <Filter>src\Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +44,9 @@
     </Filter>
     <Filter Include="thirdparty">
       <UniqueIdentifier>{688c2760-2d97-4e69-995d-e806454d8852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Ui">
+      <UniqueIdentifier>{f913f990-aa44-4dc2-9241-8f312720a608}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +68,9 @@
     <QtMoc Include="FocusedFile.h">
       <Filter>src</Filter>
     </QtMoc>
+    <QtMoc Include="MainMenu.h">
+      <Filter>src\Ui</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sub-Merge.rc" />
@@ -68,7 +80,10 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="SM_MainWindow_UI.h">
-      <Filter>src</Filter>
+      <Filter>src\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="PrefDialog.h">
+      <Filter>src\Ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
