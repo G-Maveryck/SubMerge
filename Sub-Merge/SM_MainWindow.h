@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------------------
 * Author : Gabriel Wulveryck.
-* Year : 2023
+* Year : 2024
 * for any information, please contact : wulveryck.gabriel@gmail.com
 *
 * This file is a part of the SubMerge project.

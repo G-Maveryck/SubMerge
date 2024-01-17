@@ -111,6 +111,7 @@
     <ClCompile Include="PrefDialog.cpp" />
     <ClCompile Include="ProcessThread.cpp" />
     <ClCompile Include="SM_MainWindow_UI.cpp" />
+    <ClCompile Include="TimecodeInfo.cpp" />
     <ClCompile Include="TimelineFrame.cpp" />
     <ClCompile Include="WaveformWidget.cpp" />
     <QtRcc Include="SubMerge.qrc" />
@@ -134,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugMacro.h" />
+    <QtMoc Include="TimecodeInfo.h" />
     <QtMoc Include="MainMenu.h" />
     <ClInclude Include="PrefDialog.h" />
     <ClInclude Include="SM_MainWindow_UI.h" />

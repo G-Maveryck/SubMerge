@@ -7,9 +7,6 @@
     <ClCompile Include="SM_MainWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="TimelineFrame.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="WaveformWidget.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -29,6 +26,12 @@
       <Filter>src\Ui</Filter>
     </ClCompile>
     <ClCompile Include="PrefDialog.cpp">
+      <Filter>src\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="TimecodeInfo.cpp">
+      <Filter>src\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="TimelineFrame.cpp">
       <Filter>src\Ui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,9 +56,6 @@
     <QtMoc Include="SM_MainWindow.h">
       <Filter>src</Filter>
     </QtMoc>
-    <QtMoc Include="TimelineFrame.h">
-      <Filter>src</Filter>
-    </QtMoc>
     <QtMoc Include="WaveformWidget.h">
       <Filter>src</Filter>
     </QtMoc>
@@ -69,6 +69,12 @@
       <Filter>src</Filter>
     </QtMoc>
     <QtMoc Include="MainMenu.h">
+      <Filter>src\Ui</Filter>
+    </QtMoc>
+    <QtMoc Include="TimelineFrame.h">
+      <Filter>src\Ui</Filter>
+    </QtMoc>
+    <QtMoc Include="TimecodeInfo.h">
       <Filter>src\Ui</Filter>
     </QtMoc>
   </ItemGroup>

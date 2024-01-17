@@ -40,8 +40,7 @@
 #include "WaveformWidget.h"
 
 
-class TimelineFrame :
-    public QFrame
+class TimelineFrame : public QFrame
 {
     Q_OBJECT
 

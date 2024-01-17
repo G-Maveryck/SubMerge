@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------------------
 * Author : Gabriel Wulveryck.
-* Year : 2023
+* Year : 2024
 * for any information, please contact : wulveryck.gabriel@gmail.com
 *
 * This file is a part of the SubMerge project.
@@ -47,13 +47,7 @@ SM_MainWindow::SM_MainWindow(QWidget* parent)
 {
     connect(view.MenuBar->prefAct, &QAction::trigger,
         this, &SM_MainWindow::on_prefAct_trigger);
-    // ui.setupUi(this);
-    /*
-    setWindowFlags(windowFlags() | Qt::CustomizeWindowHint |
-        Qt::WindowMinimizeButtonHint |
-        Qt::WindowMaximizeButtonHint |
-        Qt::WindowCloseButtonHint);
-    */
+   
 
 }
 
@@ -64,7 +58,6 @@ SM_MainWindow::~SM_MainWindow()
 
 void SM_MainWindow::on_prefAct_trigger()
 {
-    prefDial = new PrefDialog(this);
-    prefDial->show();
+
 }
 

@@ -1,20 +1,61 @@
+/* --------------------------------------------------------------------------------------
+* Author : Gabriel Wulveryck.
+* Year : 2024
+* for any information, please contact : wulveryck.gabriel@gmail.com
+*
+* This file is a part of the SubMerge project.
+*
+* SubMerge is a free software, and is published under the terms of the GNU General Public Licence, version 3.
+* You can redistribute it and/or modify it under the terms of the GNU General Public License
+* as published by the Free Software Foundation; either version 3 of the License,
+* or (at your option) any later version.
+* You should have recived a copy of the licence with the project.
+*
+* SubMerge is distributed as a contribution to the open-source and free software community,
+* in the hope it'll be usefull.
+* SubMerge is distributed without ANY WARRANTY, without even the implied warranty
+* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*
+* See the GNU General Public License for more details.
+*
+*-------------------------------------------------------------------------------------- */
+
+
 #include "SM_MainWindow_UI.h"
 
-#include <qgridlayout.h>
-#include <qlabel.h>
+#include<qgridlayout.h>
+#include<QLayout.h>
+#include<qlabel.h>
+#include<qsizepolicy.h>
+#include<qmargins.h>
+
 
 SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullptr)
-	:parentWindow(MainWindow)
-		// ui elements init
-	,MenuBar(new MainMenu(MainWindow))
+	: parentWindow(MainWindow)
+	// ui elements init
+	, MenuBar(new MainMenu(MainWindow))
 
-	,centralWidget(new QWidget(MainWindow))
-	,centralLout(new QGridLayout(centralWidget))
-	
-	,F_upInfo(new QFrame(MainWindow))
-	,F_playing(new QFrame(MainWindow))
-	,F_up_Lout(new QGridLayout(F_upInfo))
-	,F_playing_Lout(new QGridLayout(F_playing))
+	, centralWidget(new QWidget(MainWindow))
+	, centralLout(new QGridLayout(centralWidget))
+
+	, F_search(new QFrame(MainWindow))
+	, F_playing(new QFrame(MainWindow))
+	, lout_search(new QHBoxLayout(F_search))
+	, lout_F_playing(new QGridLayout(F_playing))
+	, v_Splitter(new QSplitter(MainWindow))
+
+	//UI Elements : Frame up
+
+	//UI Elements : Frame Down
+	, lout_ControlBar(new QHBoxLayout(F_playing))
+	, timeLine(new TimelineFrame(MainWindow))
+
+	//Playing Control
+	, p_PlayPause(new QPushButton(MainWindow))
+	, s_Volume(new QSlider(MainWindow))
+	, l_trackName(new QLabel(MainWindow))
+	, TimeInfo(new TimecodeInfo(MainWindow))
+
 {	
 		// Configuring the main window
 	if (MainWindow->objectName().isEmpty() ) {
@@ -24,23 +65,108 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	MainWindow->setWindowModality(Qt::ApplicationModal);
 	MainWindow->setDockNestingEnabled(true);		//MacOS feature only
 	MainWindow->resize(1200, 720);		//tmp Size
+	MainWindow->setMinimumSize(480, 260);
+
+	MainWindow->setWindowFlags(MainWindow->windowFlags() | 
+		Qt::CustomizeWindowHint |
+		Qt::WindowMinimizeButtonHint |
+		Qt::WindowMaximizeButtonHint |
+		Qt::WindowCloseButtonHint
+	);
+
+	MainWindow->setWindowTitle("SubMerge - Version 0.0.1");
+	
+	
+	//--------------------------------------------------
+
+
+		//Begin building UI.
+		
+		//Define the global Content Margin policy for the main window. Will be reused.
+	QMargins globalContentMargin(0, 0, 0, 0);
 
 	MainWindow->setMenuBar(MenuBar);
 	MainWindow->setCentralWidget(centralWidget);
-	
-	//--------------------------------------------------
-		//Begin building UI.
-
+	centralLout->setContentsMargins(2, 2, 2, 2);
 	centralWidget->setLayout(centralLout);
 
-	F_upInfo->setLayout(F_up_Lout);
-	F_upInfo->setBaseSize(480, 200);
+		//Frame up building : Info on current track playing
+	F_search->setLayout(lout_search);
+	F_search->setBaseSize(1200, 500);
+	F_search->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-	F_playing->setLayout(F_playing_Lout);
-	F_playing->setBaseSize(480, 800);
+
+		
+		// Bottom Frame building : Playing control and timeline.
+	F_playing->setBaseSize(720, 100);
+	F_playing->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	F_playing->setLayout(lout_F_playing);
+
+
+		// Playing control bar layout
+	QSizePolicy policyControlBar(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	QSize sizeControlBar(50, 30);
+
 	
-	centralLout->addWidget(F_upInfo);
-	centralLout->addWidget(F_playing);
+	p_PlayPause->setText("Play");
+	p_PlayPause->setFixedSize(sizeControlBar);
+	p_PlayPause->setSizePolicy(policyControlBar);
+
+	s_Volume->setOrientation(Qt::Horizontal);
+	s_Volume->setMinimum(0);
+	s_Volume->setMaximum(100);
+	s_Volume->setSliderPosition(80);
+	s_Volume->setFixedSize(150, 20);
+	s_Volume->setSizePolicy(policyControlBar);
+	
+	QSpacerItem* spacerControlBar1(new QSpacerItem(
+		50, 50, QSizePolicy::Fixed, QSizePolicy::Fixed)
+	);
+
+	l_trackName->setText("No file selected.");
+
+	QSpacerItem* spacerControlBar2(new QSpacerItem(
+		200, 50, QSizePolicy::Expanding, QSizePolicy::Fixed)
+		);
+
+	TimeInfo->setSizePolicy(policyControlBar);
+	TimeInfo->setFixedSize(200, 40);
+
+
+		// Insert widget in controlBar layout
+	lout_ControlBar->setContentsMargins(globalContentMargin);
+	lout_ControlBar->addWidget(s_Volume);
+	lout_ControlBar->addWidget(p_PlayPause);
+
+	lout_ControlBar->addItem(spacerControlBar1);
+	lout_ControlBar->addWidget(l_trackName);
+
+	lout_ControlBar->addItem(spacerControlBar2);
+	lout_ControlBar->addWidget(TimeInfo);
+	/*
+	lout_ControlBar->addWidget(l_Position);
+	lout_ControlBar->addWidget(l_Duration);
+	lout_ControlBar->addWidget(l_Format);
+	*/
+
+		
+	lout_F_playing->setContentsMargins(0, 0, 0, 0);
+	lout_F_playing->addLayout(lout_ControlBar, 0, 0, 1, 1);
+	
+
+		//Timeline part
+	timeLine->setBaseSize(720, 200);
+	lout_F_playing->addWidget(timeLine);
+
+	v_Splitter->setOrientation(Qt::Vertical);
+	v_Splitter->setHandleWidth(10);
+	v_Splitter->setCollapsible(0, false);
+
+	v_Splitter->addWidget(F_search);
+	v_Splitter->addWidget(F_playing);
+
+	centralLout->addWidget(v_Splitter, 0, 0);
+	//centralLout->addWidget(F_playing, 16, 0);
 }
 
 SM_MainWindow_UI::~SM_MainWindow_UI()
