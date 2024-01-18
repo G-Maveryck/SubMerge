@@ -52,7 +52,8 @@
 #define TIMECODEINFO_H
 
 	// Helper macro to avoid boilerplate.
-#define CONFIGURE_LABEL(name) name->setFixedSize(labelsSize); name->setSizePolicy(labelsPolicy); name->setAlignment(Qt::AlignCenter);
+#define INIT_LABEL(name) name->setFixedSize(labelsSize); name->setSizePolicy(labelsPolicy); name->setAlignment(Qt::AlignCenter);
+#define TC_ZERO_VALUE "00:00.00"
 
 #include <qwidget.h>
 #include <QLayout.h>
@@ -71,19 +72,22 @@ public:
 
 
 protected:
-	virtual void paintEvent(QPaintEvent* event);
+	void resetPositionInfo();		// Reset all position and selection TC's to Zero.
+
+	// virtual void paintEvent(QPaintEvent* event);
 
 private:
 	QVBoxLayout* mainLayout;
 	QHBoxLayout* topLayout;
 	QHBoxLayout* botLayout;
 
-	QLabel* l_Format;
-	QLabel* l_Duration;
-	QLabel* l_Position;
-	QLabel* l_SelecText;
-	QLabel* l_SelecLenght;
-	QLabel* l_SelecEnd;
+	QLabel* l_Format;		// Audio Format Samplerate/Bitrate (such as : "96|24"  /  "44.1|16"  )
+	QLabel* l_Duration;		// Duration of the curent file in short Timecode format : "00:00.00" = "min:sec.sec/10"
+	QLabel* l_Position;		// Curent playing position in TC format, identical to duration
+	
+	QLabel* l_SelecText;	// "Selection" mention.
+	QLabel* l_SelecLenght;	// Lenght of the user selection : delta between EndTC and StartTC
+	QLabel* l_SelecEnd;		// End TC of the current user selection
 
 
 };

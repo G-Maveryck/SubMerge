@@ -21,14 +21,17 @@
 *-------------------------------------------------------------------------------------- */
 
 /*
-    Main Window class header.
+    Main Window class Controller.
+    This class is the main controller of the application.
+    This contain the connection between UI signal and controller slots.
+    Also contain the Slots definitions, intended to be the "back-end" of the application
+
 */
 
 #ifndef SUBMERGE_H
 #define SUBMERGE_H
 
 #include <QtWidgets/QMainWindow>
-//#include "ui_SubMerge.h"
 #include "SM_MainWindow_UI.h"
 #include "PrefDialog.h"
 
@@ -42,16 +45,15 @@ class SM_MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    SM_MainWindow(QWidget *parent = nullptr);    // Constructeur
-    ~SM_MainWindow();                            // Destructeur
+    SM_MainWindow(QWidget *parent = (QWidget*)nullptr);
+    ~SM_MainWindow();                            
 
 protected:
     void on_prefAct_trigger();
 
 private:
-    // Ui::SubMergeClass ui;
-    SM_MainWindow_UI view;
-    PrefDialog* prefDial;
+    SM_MainWindow_UI view;      // View class (front-end)
+    PrefDialog* prefDial;       // Preference window pointer (to be done...)
 
 
 };

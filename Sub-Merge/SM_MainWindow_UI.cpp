@@ -48,12 +48,12 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 
 	//UI Elements : Frame Down
 	, lout_ControlBar(new QHBoxLayout(F_playing))
-	, timeLine(new TimelineFrame(MainWindow))
+	, Timeline(new TimelineFrame(MainWindow))
 
 	//Playing Control
 	, p_PlayPause(new QPushButton(MainWindow))
 	, s_Volume(new QSlider(MainWindow))
-	, l_trackName(new QLabel(MainWindow))
+	, l_TrackName(new QLabel(MainWindow))
 	, TimeInfo(new TimecodeInfo(MainWindow))
 
 {	
@@ -86,14 +86,15 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	QMargins globalContentMargin(0, 0, 0, 0);
 
 	MainWindow->setMenuBar(MenuBar);
-	MainWindow->setCentralWidget(centralWidget);
 	centralLout->setContentsMargins(2, 2, 2, 2);
+	centralWidget->setContentsMargins(globalContentMargin);
 	centralWidget->setLayout(centralLout);
+	MainWindow->setCentralWidget(centralWidget);
 
 		//Frame up building : Info on current track playing
 	F_search->setLayout(lout_search);
 	F_search->setBaseSize(1200, 500);
-	F_search->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+	F_search->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 
 		
@@ -103,10 +104,9 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	F_playing->setLayout(lout_F_playing);
 
 
-		// Playing control bar layout
+		// Playing control bar layout : configuring widgets
 	QSizePolicy policyControlBar(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	QSize sizeControlBar(50, 30);
-
 	
 	p_PlayPause->setText("Play");
 	p_PlayPause->setFixedSize(sizeControlBar);
@@ -123,7 +123,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 		50, 50, QSizePolicy::Fixed, QSizePolicy::Fixed)
 	);
 
-	l_trackName->setText("No file selected.");
+	l_TrackName->setText("No file selected.");
 
 	QSpacerItem* spacerControlBar2(new QSpacerItem(
 		200, 50, QSizePolicy::Expanding, QSizePolicy::Fixed)
@@ -139,25 +139,22 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	lout_ControlBar->addWidget(p_PlayPause);
 
 	lout_ControlBar->addItem(spacerControlBar1);
-	lout_ControlBar->addWidget(l_trackName);
+	lout_ControlBar->addWidget(l_TrackName);
 
 	lout_ControlBar->addItem(spacerControlBar2);
 	lout_ControlBar->addWidget(TimeInfo);
-	/*
-	lout_ControlBar->addWidget(l_Position);
-	lout_ControlBar->addWidget(l_Duration);
-	lout_ControlBar->addWidget(l_Format);
-	*/
 
+	
+		//Timeline part
+	Timeline->setBaseSize(720, 200);
+	Timeline->setMinimumSize(480, 150);
 		
 	lout_F_playing->setContentsMargins(0, 0, 0, 0);
 	lout_F_playing->addLayout(lout_ControlBar, 0, 0, 1, 1);
-	
+	lout_F_playing->addWidget(Timeline);
 
-		//Timeline part
-	timeLine->setBaseSize(720, 200);
-	lout_F_playing->addWidget(timeLine);
 
+		// Adding frame to splitter
 	v_Splitter->setOrientation(Qt::Vertical);
 	v_Splitter->setHandleWidth(10);
 	v_Splitter->setCollapsible(0, false);
@@ -166,7 +163,6 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	v_Splitter->addWidget(F_playing);
 
 	centralLout->addWidget(v_Splitter, 0, 0);
-	//centralLout->addWidget(F_playing, 16, 0);
 }
 
 SM_MainWindow_UI::~SM_MainWindow_UI()

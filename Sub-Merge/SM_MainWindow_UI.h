@@ -20,6 +20,36 @@
 *
 *-------------------------------------------------------------------------------------- */
 
+/*
+	Seperated class for all UI definition and construction.
+	This choise is made for "cleaning" the code, and have a proper seperation 
+	between front-end and back-end / View and Controller.
+	This class is intended to contain the View only.
+
+
+	UI Hierachy :
+
+	MainWindow
+		|---CentralWidget			QWidget
+			|---centralLayout		QGridLayout
+				|---v_Splitter		QSplitter - Vertical
+						|---F_Search QFrame
+						|		|---lout_Search	QHLayout
+						|
+						|---F_playing QFrame
+								|---lout_F_playing					QGridLayout
+									|---lout_ControlBar				QHLayout
+									|		|---s_Volume			QSlider - Horizontal
+									|		|---p_PlayPause			QPushButton
+									|		|---spacerControlBar1	QSpacerItem
+									|		|---l_TrackName			QLabel
+									|		|---spacerControlBar2	QSpacerItem
+									|		|---TimeInfo			QWidget
+									|
+									|---Timeline
+								
+*/
+
 
 
 #ifndef MAIN_WINDOW_UI_H
@@ -32,15 +62,14 @@
 #include<qlayout.h>
 #include<QVBoxlayout>
 #include<QHBoxlayout>
-#include<qframe.h>
+#include<qsplitter.h>
+#include<qsizepolicy.h>
+#include<qsize.h>
 
+#include<qframe.h>
 #include<qpushbutton.h>
 #include<qslider.h>
 #include<qlabel.h>
-
-#include<qsplitter.h>
-
-#include<qsizepolicy.h>
 
 
 #include"MainMenu.h"
@@ -59,30 +88,32 @@ public:
 		// Ui objects declaration, public for being accessible to the controller
 	MainMenu* MenuBar;
 
-	QLabel* l_trackName;
-	TimelineFrame* timeLine;
-
-		//Playing Control objects
-	QPushButton* p_PlayPause;
+		
+		//F_playing objects
+		//Playing ControlBar objects
 	QSlider* s_Volume;
+	QPushButton* p_PlayPause;
+	QLabel* l_TrackName;
 	TimecodeInfo* TimeInfo;
+
+	TimelineFrame* Timeline;
 
 
 private:
 	QWidget* centralWidget;
-	//QSplitter* playingSplitter;
-
+	
 		//Ui elements : Frame Up
 
-		// Layout and containers instance for main UI.
-	QFrame* F_search;
+		// Containers instance for main UI.
 	QSplitter* v_Splitter;
+	QFrame* F_search;
 	QFrame* F_playing;
+
+		// Layout
 	QGridLayout* centralLout;
 	QHBoxLayout* lout_search;
 	QGridLayout* lout_F_playing;
 	QHBoxLayout* lout_ControlBar;
-
 
 		// stored here for potential reuse. Not sure if it'll be usefull.
 	QMainWindow* parentWindow;

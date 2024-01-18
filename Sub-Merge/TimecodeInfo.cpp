@@ -45,24 +45,24 @@ TimecodeInfo::TimecodeInfo(QWidget* parent = (QWidget*)nullptr)
 
 
 	//l_Format->setAlignment(Qt::AlignHCenter);
-	CONFIGURE_LABEL(l_Format)
+	INIT_LABEL(l_Format)
 	l_Format->setText("|");
-	CONFIGURE_LABEL(l_Duration)
-	l_Duration->setText("00:00");
-	CONFIGURE_LABEL(l_Position);
-	l_Position->setText("00:00");
+	INIT_LABEL(l_Duration)
+	l_Duration->setText(TC_ZERO_VALUE);
+	INIT_LABEL(l_Position);
+	l_Position->setText(TC_ZERO_VALUE);
 	
 	topLayout->addWidget(l_Format);
 	topLayout->addWidget(l_Duration);
 	topLayout->addWidget(l_Position);
 
 
-	CONFIGURE_LABEL(l_SelecText);
+	INIT_LABEL(l_SelecText);
 	l_SelecText->setText("Selection:");
-	CONFIGURE_LABEL(l_SelecLenght);
-	l_SelecLenght->setText("00:00.00");
-	CONFIGURE_LABEL(l_SelecEnd);
-	l_SelecEnd->setText("00:00.0");
+	INIT_LABEL(l_SelecLenght);
+	l_SelecLenght->setText(TC_ZERO_VALUE);
+	INIT_LABEL(l_SelecEnd);
+	l_SelecEnd->setText(TC_ZERO_VALUE);
 
 	botLayout->addWidget(l_SelecText);
 	botLayout->addWidget(l_SelecLenght);
@@ -74,15 +74,18 @@ TimecodeInfo::TimecodeInfo(QWidget* parent = (QWidget*)nullptr)
 
 	setLayout(mainLayout);
 
-	
-
 }
 
 TimecodeInfo::~TimecodeInfo()
 {
 }
 
-void TimecodeInfo::paintEvent(QPaintEvent* event)
+void TimecodeInfo::resetPositionInfo()
 {
-	
+	// Reset all "cursor related" info to zero. 
+	// Usefull when a new file is selected.
+
+	l_Position->setText(TC_ZERO_VALUE);
+	l_SelecLenght->setText(TC_ZERO_VALUE);
+	l_SelecEnd->setText(TC_ZERO_VALUE);
 }
