@@ -21,13 +21,14 @@
 *-------------------------------------------------------------------------------------- */
 
 /*
-    Main Window class implementation.
+	Main Window class implementation.
 */
 
 #include "SM_MainWindow.h"
 #include "DebugMacro.h"
 #include "Audio_player.h"
 #include "TimelineFrame.h"
+#include "PrefDialog.h"
 
 #include <qobject.h>
 #include <QPushButton>
@@ -40,24 +41,61 @@
 
 
 SM_MainWindow::SM_MainWindow(QWidget* parent)
-    :QMainWindow(parent)
-    , view(this)
-    , prefDial(nullptr)
-    
+	:QMainWindow(parent)
+	, view(this)
+	
 {
-    connect(view.MenuBar->prefAct, &QAction::trigger,
-        this, &SM_MainWindow::on_prefAct_trigger);
+	connect(view.MenuBar->prefAct, &QAction::triggered,
+		this, &SM_MainWindow::on_prefAct_trigger);
+
+	connect(view.MenuBar->openAct, &QAction::triggered,
+		this, &SM_MainWindow::on_OpenFile_triggered);
    
+
+
 
 }
 
 SM_MainWindow::~SM_MainWindow()
 {
-    
+	
 }
 
 void SM_MainWindow::on_prefAct_trigger()
 {
+	PrefDialog* prefDial(new PrefDialog(this));
+	
+	int prefReturnVal = prefDial->exec();
+	switch (prefReturnVal)
+	{
+	case 0:		// Rejected case
+		//do noting, just returns.
+		QLOG("Rejected, shit yourself");
+		break;
 
+	case 1:		// Accepted case
+		// do someting, store settings in QSettings, reload some things, etc..
+		QLOG("Accepted, Updated setting, closing Dialog");
+		break;
+
+	default:
+		QLOG("Fart.");
+		break;
+	}
+
+		// Free the memory before exiting the scope.
+	delete prefDial;
+}
+
+void SM_MainWindow::on_OpenFile_triggered()
+{
+	QString filePath = 
+		QFileDialog::getOpenFileName(
+		this,
+		tr("Open file"),
+		tr("D:/"),
+		tr("All Files (*.*)") );
+
+	QLOG(filePath);
 }
 

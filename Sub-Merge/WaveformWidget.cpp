@@ -31,12 +31,14 @@
 #include "DebugMacro.h"
 
 
-WaveformWidget::WaveformWidget(QWidget* parent) :
-	QWidget(parent)
+WaveformWidget::WaveformWidget(QFrame* hostFrame)
+	: QWidget((QWidget*)hostFrame)
+	, host(hostFrame)
 {
+	/*
 	setBaseSize(50, 20);
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
+	*/
 	
 
 }

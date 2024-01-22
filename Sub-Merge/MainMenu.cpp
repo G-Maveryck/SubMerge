@@ -26,8 +26,11 @@ MainMenu::MainMenu(QMainWindow* parent = (QMainWindow*)nullptr)
 	FileM->addAction(closeAct);
 	FileM->addSeparator();
 	FileM->addAction(prefAct);
+
 	PlaybackM->addAction(playpauseAct);
+
 	HelpM->addAction(aboutAct);
+
 
 	addMenu(FileM);
 	addMenu(PlaybackM);

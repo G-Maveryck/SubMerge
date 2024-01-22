@@ -33,10 +33,13 @@
 		|---CentralWidget			QWidget
 			|---centralLayout		QGridLayout
 				|---v_Splitter		QSplitter - Vertical
-						|---F_Search QFrame
-						|		|---lout_Search	QHLayout
+						|---f_Search					QFrame
+						|		|---lout_Search			QGridLayout
+						|				|---searchBox				QLineEdit
+						|				|---spacerSearch			QSpacerItem
+						|				|---SearchResults			QTableView
 						|
-						|---F_playing QFrame
+						|---f_Playing					QFrame
 								|---lout_F_playing					QGridLayout
 									|---lout_ControlBar				QHLayout
 									|		|---s_Volume			QSlider - Horizontal
@@ -56,26 +59,30 @@
 #define MAIN_WINDOW_UI_H
 
 
-#include<qmainwindow.h>
-
-#include<qwidget.h>
-#include<qlayout.h>
-#include<QVBoxlayout>
-#include<QHBoxlayout>
-#include<qsplitter.h>
-#include<qsizepolicy.h>
-#include<qsize.h>
-
-#include<qframe.h>
-#include<qpushbutton.h>
-#include<qslider.h>
-#include<qlabel.h>
-
-
-#include"MainMenu.h"
-#include"TimelineFrame.h"
-#include"WaveformWidget.h"
-#include"TimecodeInfo.h"
+#include <qmainwindow.h>
+		 
+#include <qwidget.h>
+#include <qlayout.h>
+#include <QVBoxlayout>
+#include <QHBoxlayout>
+#include <qsplitter.h>
+#include <qsizepolicy.h>
+#include <qsize.h>
+		 
+#include <qframe.h>
+#include <qpushbutton.h>
+#include <qslider.h>
+#include <qlabel.h>
+		 
+#include <qlineedit.h>
+#include <qtableview.h>
+		 
+#include <qpalette.h>
+		 
+#include "MainMenu.h"
+#include "TimelineFrame.h"
+#include "WaveformWidget.h"
+#include "TimecodeInfo.h"
 
 
 class SM_MainWindow_UI
@@ -88,7 +95,10 @@ public:
 		// Ui objects declaration, public for being accessible to the controller
 	MainMenu* MenuBar;
 
-		
+		// F_Search Objects
+	QLineEdit* searchBox;
+	QTableView* SearchResults;
+
 		//F_playing objects
 		//Playing ControlBar objects
 	QSlider* s_Volume;
@@ -102,21 +112,21 @@ public:
 private:
 	QWidget* centralWidget;
 	
-		//Ui elements : Frame Up
-
 		// Containers instance for main UI.
 	QSplitter* v_Splitter;
-	QFrame* F_search;
-	QFrame* F_playing;
+	QFrame* f_Search;
+	QFrame* f_Playing;
 
 		// Layout
 	QGridLayout* centralLout;
-	QHBoxLayout* lout_search;
+	QGridLayout* lout_search;
 	QGridLayout* lout_F_playing;
 	QHBoxLayout* lout_ControlBar;
 
 		// stored here for potential reuse. Not sure if it'll be usefull.
 	QMainWindow* parentWindow;
+
+	
 
 };
 

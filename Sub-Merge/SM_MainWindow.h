@@ -51,9 +51,10 @@ public:
 protected:
     void on_prefAct_trigger();
 
+    void on_OpenFile_triggered();
+
 private:
     SM_MainWindow_UI view;      // View class (front-end)
-    PrefDialog* prefDial;       // Preference window pointer (to be done...)
 
 
 };

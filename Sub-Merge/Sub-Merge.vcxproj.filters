@@ -7,9 +7,6 @@
     <ClCompile Include="SM_MainWindow.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="WaveformWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="Audio_player.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
     <ClCompile Include="TimelineFrame.cpp">
       <Filter>src\Ui</Filter>
     </ClCompile>
+    <ClCompile Include="WaveformWidget.cpp">
+      <Filter>src\Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SubMerge.qrc" />
@@ -56,9 +56,6 @@
     <QtMoc Include="SM_MainWindow.h">
       <Filter>src</Filter>
     </QtMoc>
-    <QtMoc Include="WaveformWidget.h">
-      <Filter>src</Filter>
-    </QtMoc>
     <QtMoc Include="Audio_player.h">
       <Filter>src</Filter>
     </QtMoc>
@@ -77,6 +74,12 @@
     <QtMoc Include="TimecodeInfo.h">
       <Filter>src\Ui</Filter>
     </QtMoc>
+    <QtMoc Include="WaveformWidget.h">
+      <Filter>src\Ui</Filter>
+    </QtMoc>
+    <QtMoc Include="PrefDialog.h">
+      <Filter>src\Ui</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sub-Merge.rc" />
@@ -86,9 +89,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="SM_MainWindow_UI.h">
-      <Filter>src\Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="PrefDialog.h">
       <Filter>src\Ui</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,22 +32,25 @@
 
 SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullptr)
 	: parentWindow(MainWindow)
+	
 	// ui elements init
 	, MenuBar(new MainMenu(MainWindow))
 
 	, centralWidget(new QWidget(MainWindow))
 	, centralLout(new QGridLayout(centralWidget))
 
-	, F_search(new QFrame(MainWindow))
-	, F_playing(new QFrame(MainWindow))
-	, lout_search(new QHBoxLayout(F_search))
-	, lout_F_playing(new QGridLayout(F_playing))
+	, f_Search(new QFrame(MainWindow))
+	, f_Playing(new QFrame(MainWindow))
+	, lout_search(new QGridLayout(f_Search))
+	, lout_F_playing(new QGridLayout(f_Playing))
 	, v_Splitter(new QSplitter(MainWindow))
 
-	//UI Elements : Frame up
+	//UI Elements : Frame up / F_Search
+	, searchBox(new QLineEdit(MainWindow))
+	, SearchResults(new QTableView(MainWindow))
 
-	//UI Elements : Frame Down
-	, lout_ControlBar(new QHBoxLayout(F_playing))
+	//UI Elements : Frame Down / F_Playing
+	, lout_ControlBar(new QHBoxLayout(f_Playing))
 	, Timeline(new TimelineFrame(MainWindow))
 
 	//Playing Control
@@ -58,7 +61,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 
 {	
 		// Configuring the main window
-	if (MainWindow->objectName().isEmpty() ) {
+	if (MainWindow->objectName().isEmpty()) {
 		MainWindow->setObjectName("SM_MainWindow");
 	}
 		//General window settings
@@ -75,7 +78,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	);
 
 	MainWindow->setWindowTitle("SubMerge - Version 0.0.1");
-	
+
 	
 	//--------------------------------------------------
 
@@ -91,17 +94,31 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	centralWidget->setLayout(centralLout);
 	MainWindow->setCentralWidget(centralWidget);
 
-		//Frame up building : Info on current track playing
-	F_search->setLayout(lout_search);
-	F_search->setBaseSize(1200, 500);
-	F_search->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+		//Frame up building : Search bar and TableView for search results.
+	searchBox->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+	searchBox->setMinimumSize(300, 10);
+	searchBox->setPlaceholderText("Search...");
+
+	QSpacerItem* spacerSearch(new QSpacerItem(400, 50, 
+		QSizePolicy::Expanding, QSizePolicy::Fixed)
+	);
+
+
+	lout_search->setContentsMargins(3,3,3,3);
+	lout_search->addWidget(searchBox, 0, 0);
+	lout_search->addItem(spacerSearch, 0, 1);
+	lout_search->addWidget(SearchResults, 1, 0, 1, 2);
+
+	f_Search->setLayout(lout_search);
+	f_Search->setBaseSize(1200, 500);
+	f_Search->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 		
+	// ----------------------
+	
 		// Bottom Frame building : Playing control and timeline.
-	F_playing->setBaseSize(720, 100);
-	F_playing->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	F_playing->setLayout(lout_F_playing);
+	 
 
 
 		// Playing control bar layout : configuring widgets
@@ -135,6 +152,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 
 		// Insert widget in controlBar layout
 	lout_ControlBar->setContentsMargins(globalContentMargin);
+
 	lout_ControlBar->addWidget(s_Volume);
 	lout_ControlBar->addWidget(p_PlayPause);
 
@@ -149,9 +167,15 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	Timeline->setBaseSize(720, 200);
 	Timeline->setMinimumSize(480, 150);
 		
-	lout_F_playing->setContentsMargins(0, 0, 0, 0);
-	lout_F_playing->addLayout(lout_ControlBar, 0, 0, 1, 1);
-	lout_F_playing->addWidget(Timeline);
+	lout_F_playing->setContentsMargins(1, 1, 1, 1);
+	lout_F_playing->addLayout(lout_ControlBar, 0, 0);
+	lout_F_playing->addWidget(Timeline, 1, 0);
+
+	
+	f_Playing->setBaseSize(720, 100);
+	f_Playing->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	f_Playing->setLayout(lout_F_playing);
+
 
 
 		// Adding frame to splitter
@@ -159,8 +183,8 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	v_Splitter->setHandleWidth(10);
 	v_Splitter->setCollapsible(0, false);
 
-	v_Splitter->addWidget(F_search);
-	v_Splitter->addWidget(F_playing);
+	v_Splitter->addWidget(f_Search);
+	v_Splitter->addWidget(f_Playing);
 
 	centralLout->addWidget(v_Splitter, 0, 0);
 }

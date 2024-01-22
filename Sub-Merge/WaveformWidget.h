@@ -31,6 +31,8 @@
 #define WAVEFORM_WIDGET_H
 
 #include "DebugMacro.h"
+
+#include <qframe.h>
 #include <QWidget>
 #include <QPainter>
 #include <QPen>
@@ -45,7 +47,7 @@ class WaveformWidget :
     Q_OBJECT
 
 public:
-    WaveformWidget(QWidget* parent = (QWidget*)nullptr);
+    WaveformWidget(QFrame* parent);
     ~WaveformWidget();
 
 
@@ -60,6 +62,8 @@ private:
 
     std::vector<QRect> m_WaveBars;
     
+    QFrame* host;
+
 };
 
 

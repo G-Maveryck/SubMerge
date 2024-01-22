@@ -137,7 +137,7 @@
     <ClInclude Include="DebugMacro.h" />
     <QtMoc Include="TimecodeInfo.h" />
     <QtMoc Include="MainMenu.h" />
-    <ClInclude Include="PrefDialog.h" />
+    <QtMoc Include="PrefDialog.h" />
     <ClInclude Include="SM_MainWindow_UI.h" />
     <QtMoc Include="FocusedFile.h" />
     <QtMoc Include="ProcessThread.h" />

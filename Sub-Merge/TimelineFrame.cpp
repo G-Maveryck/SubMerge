@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------------------
 * Author : Gabriel Wulveryck.
-* Year : 2023
+* Year : 2024
 * for any information, please contact : wulveryck.gabriel@gmail.com
 *
 * This file is a part of the SubMerge project.
@@ -101,18 +101,16 @@ void TimelineFrame::setNewProperties(int channelNmb)
 
 		// Check for the first call of this method.
 		// Clear the vector and free the memory if previous widgets were instensiated.
-	if (!m_channelsWidget.empty())
-	{
-		for (int i = 0; i < m_channelsWidget.size(); i++)
-		{
+	if (!m_channelsWidget.empty()) {
+		for (int i = 0; i < m_channelsWidget.size(); i++) {
 			delete m_channelsWidget.at(i);
 		}
+
 		m_channelsWidget.clear();
 	}
 
 		// Create one Widget per channel, and add it in the Timeline layout.
-	for (int i = 0; i < m_channelsNumber; i++)
-	{
+	for (int i = 0; i < m_channelsNumber; i++) {
 		m_channelsWidget.push_back(new WaveformWidget(this));
 		m_layout->addWidget(m_channelsWidget.at(i));
 	}
@@ -120,8 +118,7 @@ void TimelineFrame::setNewProperties(int channelNmb)
 
 int TimelineFrame::getWaveformWidth()
 {
-	if (m_channelsWidget.size() > 0)
-	{
+	if (m_channelsWidget.size() > 0) {
 		return m_channelsWidget.at(0)->width();
 	}
 }
@@ -157,8 +154,7 @@ void TimelineFrame::resizeEvent(QResizeEvent* event)
 	QLOG("event new Size : " << newWidth);
 	QLOG("New ScaleFactor" << m_scaleXFactor);
 
-	if (m_scaleXFactor <= 0)
-	{
+	if (m_scaleXFactor <= 0) {
 		m_scaleXFactor = 1;		// Silly, but working...
 	}
 
