@@ -38,22 +38,22 @@
 #include <QMessageBox>
 
 #include <QDebug>
+#include <qsettings.h>
+#include <qapplication.h>
 
 
 SM_MainWindow::SM_MainWindow(QWidget* parent)
 	:QMainWindow(parent)
 	, view(this)
-	
+	, settings(new QSettings(this))
 {
+
+
 	connect(view.MenuBar->prefAct, &QAction::triggered,
 		this, &SM_MainWindow::on_prefAct_trigger);
 
 	connect(view.MenuBar->openAct, &QAction::triggered,
 		this, &SM_MainWindow::on_OpenFile_triggered);
-   
-
-
-
 }
 
 SM_MainWindow::~SM_MainWindow()

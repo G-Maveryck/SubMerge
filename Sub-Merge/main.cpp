@@ -22,15 +22,19 @@
 
 #include "SM_MainWindow.h"
 #include <QtWidgets/QApplication>
+#include <qsettings.h>
 
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+	QApplication app(argc, argv);
 
-    SM_MainWindow MainWindow;
-    MainWindow.show();
+	QCoreApplication::setOrganizationName("Submerge Project");
+	QCoreApplication::setApplicationName("SubMerge");
 
-    return app.exec();
+	SM_MainWindow MainWindow;
+	MainWindow.show();
+
+	return app.exec();
 }
-    
+	

@@ -51,6 +51,16 @@
 #endif // SM_DEBUG
 
 
+	// Macro used for switch from one argument to another in debug or release.
+	// It use the x argument in debug mode and y argument in release mode.
+#ifdef SUBM_DEBUG
+#define TOGGLE_ARG(DEBUG_ARG, RELEASE_ARG) DEBUG_ARG
+#endif // SUBM_DEBUG
+
+#ifdef SUBM_RELEASE
+#define TOGGLE_ARG(DEBUG_ARG, RELEASE_ARG) RELEASE_ARG
+#endif // SUBM_RELEASE
+
 
 
 

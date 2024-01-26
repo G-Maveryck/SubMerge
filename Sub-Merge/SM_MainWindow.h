@@ -32,6 +32,8 @@
 #define SUBMERGE_H
 
 #include <QtWidgets/QMainWindow>
+#include <qsettings.h>
+
 #include "SM_MainWindow_UI.h"
 #include "PrefDialog.h"
 
@@ -56,6 +58,7 @@ protected:
 private:
     SM_MainWindow_UI view;      // View class (front-end)
 
+    QSettings* settings;
 
 };
 

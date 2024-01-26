@@ -21,10 +21,10 @@
 *-------------------------------------------------------------------------------------- */
 
 /*
-    This class inherit for the QFrame class.
-    This is a graphical container for the WaveformWidgets.
-    The TimelineFrame Class is meant to represent a Timeline, with a playhead,
-    and displaying the Waveform of each audio channels underneath.
+	This class inherit for the QFrame class.
+	This is a graphical container for the WaveformWidgets.
+	The TimelineFrame Class is meant to represent a Timeline, with a playhead,
+	and displaying the Waveform of each audio channels underneath.
 */
 
 #ifndef TIMELINE_FRAME_H
@@ -42,36 +42,64 @@
 
 class TimelineFrame : public QFrame
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    TimelineFrame(QWidget* parent = nullptr);
-    ~TimelineFrame();
+	TimelineFrame(QWidget* parent = nullptr);
+	~TimelineFrame();
 
-    void setPlayHeadPosition(int position);
-    void on_DurationChanged(int duration);
-    void setNewProperties(int channelNmb);
-    int getWaveformWidth();
+	void setCursorPosition(int positionMilisec);// Set the playing cursor position. Position in millisec.
+	void on_DurationChanged(int duration);		// set duration of new track 
+	void setNewProperties(int channelNmb);
+
 
 protected:
-    virtual void paintEvent(QPaintEvent* event);
-    virtual void resizeEvent(QResizeEvent* event);
-    virtual void mousePressEvent(QMouseEvent* event);
+	virtual void paintEvent(QPaintEvent* event);
+	virtual void resizeEvent(QResizeEvent* event);
+	virtual void mousePressEvent(QMouseEvent* event);
+	virtual void mouseMoveEvent(QMouseEvent* event);
+	virtual void mouseReleaseEvent(QMouseEvent* event);
+
+	inline void setCursorPixelPos(int xCoordinate);	// Set the cursor position to a specific x coordinate, in pixels.
+	inline void setSelectionStartPoint(int _startPoint);
+	inline void setSelectionEndPoint(int _endPoint);
+	inline void resetSelection();
+
+
+		// Helper functions for managing convertion from/to pixels and milisec.
+	inline int milisecToPixel(int _milisec);
+	inline int pixelToMilisec(int _pixels);
+
 
 signals:
-    void userChangedPosition(int);
+	void userSetPosition(int newPostion);
+	void userSetSelection(QPoint newSlection);
+
 
 private:
-    int m_Duration;
-    int m_scaleXFactor;       // Scale factor for positionning the playhead correctly
-    int m_channelsNumber;     // Number of channels of the current audio file played
-    
-    QVBoxLayout* m_layout;
-    QLine m_playHead;
-    
-    std::vector<WaveformWidget*> m_channelsWidget;
+		// UI Elements
+	QVBoxLayout* m_layout;
+	QLine m_Cursor;
 
-    //WaveformWidget* m_testWidget;   // test
+	std::vector<WaveformWidget*> m_channelsWidget;
+
+		// Attributes section
+	int m_Duration;			// Duration of the current focused track in milisec.
+	int m_channelsNumber;	// Number of channels of the current audio file played
+	 
+	int m_scaleXFactor;	// Scale factor for positionning the playhead correctly
+	// understandable as "How many milisec per pixels" ?
+	// Multiplying by this number, we convert pixel TO milisec.
+	// Dividing by this number, we convert millisec TO pixel.
+	
+
+		//Selection parameters
+	QRect m_selecBox;		// Rectangle used to draw visualy the selection on the timeline
+							// Start position of the user selection in PIXELS
+							// End position of the user selection in PIXELS
+	bool hasSelection;		// Flag for checking if the user has made a selection.
+
+	//WaveformWidget* m_testWidget;   // test
 };
 
 #endif

@@ -23,8 +23,9 @@
 
 #include "SM_MainWindow_UI.h"
 
-#include<qgridlayout.h>
 #include<QLayout.h>
+#include<qgridlayout.h>
+
 #include<qlabel.h>
 #include<qsizepolicy.h>
 #include<qmargins.h>
@@ -47,7 +48,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 
 	//UI Elements : Frame up / F_Search
 	, searchBox(new QLineEdit(MainWindow))
-	, SearchResults(new QTableView(MainWindow))
+	, searchResults(new QTableView(MainWindow))
 
 	//UI Elements : Frame Down / F_Playing
 	, lout_ControlBar(new QHBoxLayout(f_Playing))
@@ -91,7 +92,6 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	MainWindow->setMenuBar(MenuBar);
 	centralLout->setContentsMargins(2, 2, 2, 2);
 	centralWidget->setContentsMargins(globalContentMargin);
-	centralWidget->setLayout(centralLout);
 	MainWindow->setCentralWidget(centralWidget);
 
 
@@ -108,18 +108,17 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	lout_search->setContentsMargins(3,3,3,3);
 	lout_search->addWidget(searchBox, 0, 0);
 	lout_search->addItem(spacerSearch, 0, 1);
-	lout_search->addWidget(SearchResults, 1, 0, 1, 2);
+	lout_search->addWidget(searchResults, 1, 0, 1, 2);
 
 	f_Search->setLayout(lout_search);
 	f_Search->setBaseSize(1200, 500);
 	f_Search->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 		
-	// ----------------------
+	// ----------------------------------------------------------------------
 	
-		// Bottom Frame building : Playing control and timeline.
-	 
 
+		// Bottom Frame building : Playing control and timeline.
 
 		// Playing control bar layout : configuring widgets
 	QSizePolicy policyControlBar(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -130,6 +129,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	p_PlayPause->setSizePolicy(policyControlBar);
 
 	s_Volume->setOrientation(Qt::Horizontal);
+	s_Volume->setToolTip("Volume control");
 	s_Volume->setMinimum(0);
 	s_Volume->setMaximum(100);
 	s_Volume->setSliderPosition(80);
@@ -138,7 +138,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	
 	QSpacerItem* spacerControlBar1(new QSpacerItem(
 		50, 50, QSizePolicy::Fixed, QSizePolicy::Fixed)
-	);
+		);
 
 	l_TrackName->setText("No file selected.");
 
@@ -177,7 +177,6 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	f_Playing->setLayout(lout_F_playing);
 
 
-
 		// Adding frame to splitter
 	v_Splitter->setOrientation(Qt::Vertical);
 	v_Splitter->setHandleWidth(10);
@@ -186,7 +185,11 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 	v_Splitter->addWidget(f_Search);
 	v_Splitter->addWidget(f_Playing);
 
+
+		// Adding Splitter to central Layout
 	centralLout->addWidget(v_Splitter, 0, 0);
+	
+	centralWidget->setLayout(centralLout);
 }
 
 SM_MainWindow_UI::~SM_MainWindow_UI()

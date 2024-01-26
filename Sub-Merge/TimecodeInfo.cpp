@@ -29,8 +29,8 @@
 
 
 	// Helper macro to avoid boilerplate.
-#define SET_LABEL_PROPERTIES(name) name->setSizePolicy(labelsPolicy); name->setAlignment(Qt::AlignCenter);
 #define TC_ZERO_VALUE "00:00.00"
+#define TC_DEFAULT_VALUE "-"
 
 
 TimecodeInfo::TimecodeInfo(QWidget* parent = (QWidget*)nullptr)
@@ -45,22 +45,32 @@ TimecodeInfo::TimecodeInfo(QWidget* parent = (QWidget*)nullptr)
 	, l_SelecLenght(new QLabel(this))
 	, l_SelecEnd(new QLabel(this))
 {
-	QSizePolicy labelsPolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
-	SET_LABEL_PROPERTIES(l_Format)
+	l_Format->setAlignment(Qt::AlignCenter);
 	l_Format->setText("|");
-	SET_LABEL_PROPERTIES(l_Duration)
-	l_Duration->setText(TC_ZERO_VALUE);
-	SET_LABEL_PROPERTIES(l_Position);
-	l_Position->setText(TC_ZERO_VALUE);
+	l_Format->setToolTip("Audio format : Sample rate | Bit rate");
 
-	SET_LABEL_PROPERTIES(l_SelecStart);
-	l_SelecStart->setText(TC_ZERO_VALUE);
-	SET_LABEL_PROPERTIES(l_SelecLenght);
+	l_Duration->setAlignment(Qt::AlignCenter);
+	l_Duration->setText(TC_ZERO_VALUE);
+	l_Duration->setToolTip("Duration of the current selected audio");
+
+	l_Position->setAlignment(Qt::AlignCenter);
+	l_Position->setText(TC_ZERO_VALUE);
+	l_Position->setToolTip("Current position of the playhead");
+
+
+	l_SelecStart->setAlignment(Qt::AlignCenter);
+	l_SelecStart->setText(TC_DEFAULT_VALUE);
+	l_SelecStart->setToolTip("Start Timecode of the selection");
+
+	l_SelecLenght->setAlignment(Qt::AlignCenter);
 	l_SelecLenght->setText(TC_ZERO_VALUE);
-	SET_LABEL_PROPERTIES(l_SelecEnd);
-	l_SelecEnd->setText(TC_ZERO_VALUE);
+	l_SelecLenght->setToolTip("Total lenght of the selection");
+
+	l_SelecEnd->setAlignment(Qt::AlignCenter);
+	l_SelecEnd->setText(TC_DEFAULT_VALUE);
+	l_SelecEnd->setToolTip("End Timecode of the selection");
 	
+
 	mainLayout->addWidget(l_Format, 0, 0);
 	mainLayout->addWidget(l_Duration, 0, 1);
 	mainLayout->addWidget(l_Position, 0, 2);
@@ -69,7 +79,7 @@ TimecodeInfo::TimecodeInfo(QWidget* parent = (QWidget*)nullptr)
 	mainLayout->addWidget(l_SelecLenght, 1, 1);
 	mainLayout->addWidget(l_SelecEnd, 1, 2);
 
-	mainLayout->setContentsMargins(2, 2, 2, 2);
+	mainLayout->setContentsMargins(3, 3, 3, 3);
 	setContentsMargins(0, 0, 0, 0);
 
 	setLayout(mainLayout);
@@ -85,9 +95,9 @@ void TimecodeInfo::resetPositionInfo()
 	// Reset all "cursor related" info to zero. 
 	// Usefull when a new file is selected.
 
-	l_Position->setText(TC_ZERO_VALUE);
-	l_SelecLenght->setText(TC_ZERO_VALUE);
-	l_SelecEnd->setText(TC_ZERO_VALUE);
+	l_Position->setText(TC_DEFAULT_VALUE);
+	l_SelecLenght->setText(TC_DEFAULT_VALUE);
+	l_SelecEnd->setText(TC_DEFAULT_VALUE);
 }
 
 void TimecodeInfo::paintEvent(QPaintEvent* event)

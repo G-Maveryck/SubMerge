@@ -97,7 +97,7 @@ public:
 
 		// F_Search Objects
 	QLineEdit* searchBox;
-	QTableView* SearchResults;
+	QTableView* searchResults;
 
 		//F_playing objects
 		//Playing ControlBar objects
