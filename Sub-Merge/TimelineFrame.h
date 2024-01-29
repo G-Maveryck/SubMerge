@@ -61,8 +61,6 @@ protected:
 	virtual void mouseReleaseEvent(QMouseEvent* event);
 
 	inline void setCursorPixelPos(int xCoordinate);	// Set the cursor position to a specific x coordinate, in pixels.
-	inline void setSelectionStartPoint(int _startPoint);
-	inline void setSelectionEndPoint(int _endPoint);
 	inline void resetSelection();
 
 
@@ -72,33 +70,37 @@ protected:
 
 
 signals:
-	void userSetPosition(int newPostion);
+	void userSetPosition(int newPostion);		// emitted when the user move the Cursor/playhead. Position emited is in milisec.
 	void userSetSelection(QPoint newSlection);
 
 
 private:
 		// UI Elements
 	QVBoxLayout* m_layout;
-	QLine m_Cursor;
-
 	std::vector<WaveformWidget*> m_channelsWidget;
+
+	QLine m_Cursor;			// Line used to represent the Cursor/Playhead. It's draw in the paintEven.
+	QRect m_selecBox;		// Rectangle used to draw visualy the selection on the timeline
+							// Start position of the user selection in PIXELS
+							// End position of the user selection in PIXELS
+
 
 		// Attributes section
 	int m_Duration;			// Duration of the current focused track in milisec.
 	int m_channelsNumber;	// Number of channels of the current audio file played
 	 
-	int m_scaleXFactor;	// Scale factor for positionning the playhead correctly
+	int m_scaleXFactor;		// Scale factor for positionning the playhead correctly
 	// understandable as "How many milisec per pixels" ?
 	// Multiplying by this number, we convert pixel TO milisec.
 	// Dividing by this number, we convert millisec TO pixel.
+	// Iy's used by the two Helper function milisecToPixel and pixelToMilisec.
 	
 
 		//Selection parameters
-	QRect m_selecBox;		// Rectangle used to draw visualy the selection on the timeline
-							// Start position of the user selection in PIXELS
-							// End position of the user selection in PIXELS
 	bool hasSelection;		// Flag for checking if the user has made a selection.
-
+	bool selectionSent;		// Flag used to avoid emitting multiple signals for the same selection. 
+							// Happend when user click inside the selection. 
+	int selecFirstPoint;
 	//WaveformWidget* m_testWidget;   // test
 };
 

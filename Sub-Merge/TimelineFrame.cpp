@@ -41,15 +41,17 @@
 TimelineFrame::TimelineFrame(QWidget* parent)
 	: QFrame(parent)
 	, m_layout(new QVBoxLayout)
-	, m_selecBox(0, 0, -1, -1)
+	, m_selecBox(1, 1, -1, (height() - 1))
 	, m_channelsWidget(0)
-	, m_Cursor(0, 0, 0, height())		// Playhead position initialized at 0
+	, m_Cursor(0, 0, 0, (height()-1) )		// Playhead position initialized at 0
 	
 	, m_Duration(-1)
 	, m_scaleXFactor(-1.0f)				// Scale Factor set to -1, as default value (-1 = invalid)
 	, m_channelsNumber(0)
 
 	, hasSelection(false)
+	, selectionSent(false)
+	, selecFirstPoint(-1)
 {
 	m_layout->setContentsMargins(0, 0, 0, 0);
 	m_layout->setSpacing(0);
@@ -68,18 +70,11 @@ void TimelineFrame::setCursorPosition(int positionMilisec)
 		return;
 	}
 
-	int newXPos = milisecToPixel(positionMilisec);
-
-	m_Cursor.setLine(
-		newXPos, 0,				/* P1 : Start point coordinates */
-		newXPos, height() );	/* P2 : End point coordinates */
+	setCursorPixelPos(milisecToPixel(positionMilisec));
 
 	QLOG("new position : " << positionMilisec);
 	QLOG("new P1 : " << m_Cursor.p1());
-
-		// Update view, call paintEvent and redraw the line with new coordinates.
 	update();
-	QLOG("View updated");
 }
 
 void TimelineFrame::on_DurationChanged(int duration)
@@ -121,10 +116,11 @@ void TimelineFrame::setNewProperties(int channelNmb)
 
 	// Implementation of event handler.
 
+void TimelineFrame::paintEvent(QPaintEvent* event)
 	// PaintEvent will draw the "playhead / Cursor" at his current position,
 	// and, if a selection is made by the user, it will draw the selected area.
-void TimelineFrame::paintEvent(QPaintEvent* event)
 {
+	QLOG("*** Paint Event Called ***");
 	QPainter framePainter(this);
 	
 		// Draw a bounding rectangle in Debug config to visualize the size of the frame.
@@ -139,19 +135,18 @@ void TimelineFrame::paintEvent(QPaintEvent* event)
 		// If a selection is made, the m_selecBox will be valid, and we draw a 
 		// rectangle corresponding to the selection.
 	if (hasSelection == true) {
+		QLOG("Selection is made.");
 		FOR_DEBUG( framePainter.drawRect(m_selecBox); )
 
 		framePainter.fillRect(m_selecBox, QColor(Qt::gray));
-		QLOG("valid rect");
 	}
 
 		//draw the cursor with it's actual coordinates.
 	framePainter.drawLine(m_Cursor);
 
-
 	QLOG("Rectangle isEmpty() : " << m_selecBox.isEmpty() );
 
-	QLOG("*** Paint Event Called ***");
+	QLOG("*** Paint Event Returned ***");
 }
 
 void TimelineFrame::resizeEvent(QResizeEvent* event)
@@ -173,44 +168,67 @@ void TimelineFrame::resizeEvent(QResizeEvent* event)
 	m_Cursor.setP2(QPoint(tmpLine.x2(), newWidth) );
 
 		// Set the selection box height. It'll always be the height of the timeline.
-	m_selecBox.setHeight(this->height());
+	m_selecBox.setHeight( this->height() - 1 );
 
 	event->accept();
+	update();
 }
 
 
 void TimelineFrame::mousePressEvent(QMouseEvent* event)
 {
-		// When the mouse leftMouseButton is pressed, we set the cursor where 
-		// the user clicked, set the selection start point equally,
-		// and emit signal to notify there is a change in position.
+	// When the leftMouseButton is pressed, we set the cursor where 
+	// the user clicked, set the selection first point equally,
+	// and emit signal to notify there is a change in position.
 
 	if (event->button() == Qt::LeftButton) {
-		int newPosX = event->pos().x();
+		int newPosX = event->pos().x();		// store position on the stack for readability
 	
 			// Set cursor to the new X Coordinate : where the user clicked.
 		setCursorPixelPos(newPosX);
 
-		if (hasSelection == true && 
-			// Check if the click happened outside of the selection.
+		selecFirstPoint = newPosX;
+			// Check if a selection already exist AND
+			// if the click happened outside of the selection.
+		if (hasSelection == true	&& 
 			newPosX < m_selecBox.left() || newPosX > m_selecBox.right() ) 
 		{
 			resetSelection();
-			m_selecBox.setLeft(newPosX);
 		}
-		// Set the selection start point.
 
 		event->accept();
 		emit userSetPosition(pixelToMilisec(newPosX));
+		update();
 	}
-}
+}	// !mousePressEvent
 
 void TimelineFrame::mouseMoveEvent(QMouseEvent* event)
 {
 		// set the XCoordinate of the mouse while it's moving to set 
 		// the end point of the selection.
-	m_selecBox.setRight(event->position().x() );
+
+	int mousePosX = event->pos().x();
+	if ( 1 < mousePosX > width()-1 ) {
+		return;
+	}
+
+		// Check if the mouse is moving left to right. ( -> )
+		// If so, we set the right edge of the selection box to the mouse position.
+	if (mousePosX >= (selecFirstPoint+10) ) {
+		m_selecBox.setLeft(selecFirstPoint);
+		m_selecBox.setRight(mousePosX);
+	}
+		// Check if the mouse is moving right to left ( <- ).
+		// if so, we move the Left edge of the selection box.
+	else if (mousePosX <= (selecFirstPoint-10) )
+	{
+		m_selecBox.setRight(selecFirstPoint);
+		m_selecBox.setLeft(mousePosX);
+		setCursorPixelPos(mousePosX);
+	}
+	
 	hasSelection = true;
+	selectionSent = false;
 
 	event->accept();
 	update();
@@ -218,15 +236,24 @@ void TimelineFrame::mouseMoveEvent(QMouseEvent* event)
 
 void TimelineFrame::mouseReleaseEvent(QMouseEvent* event)
 {
-	if (hasSelection == true) {
 		// A Qpoint is used to represent the selection on one axis.
 		// the X Coordinate of the QPoint represent the start point of the selection.
 		// the Y Coordinate represent the end point of the selection.
 		
 		// left() method return x coordinate of the rectangle left edge.
 		// right() method return x coordinate of the rectangle right edge.
+	
+	if (event->button() != Qt::LeftButton) {
+		return;
+	}
 
-		emit userSetSelection(QPoint(m_selecBox.left(), m_selecBox.right()) );
+	if (hasSelection == true && selectionSent == false) {
+		emit userSetSelection(QPoint(
+			pixelToMilisec(m_selecBox.left()), pixelToMilisec(m_selecBox.right()) 
+			) 
+		);
+
+		selectionSent = true;
 		QLOG("selection set and emited");
 	}
 }
@@ -236,15 +263,16 @@ inline void TimelineFrame::setCursorPixelPos(int xCoordinate)
 {
 		// Check if we stay inside the Frame bounding.
 	if (xCoordinate >= width()) {
+		QLOG("Cursor outside widget bounding, return");
 		return;
 	}
 
 		// Set the Cursor line to the new X coordinate, and update the view.
 	m_Cursor.setLine(
 		xCoordinate, 0,
-		xCoordinate, height() );
+		xCoordinate, this->height() );
 
-	update();
+	
 }
 
 inline void TimelineFrame::resetSelection()
@@ -253,6 +281,7 @@ inline void TimelineFrame::resetSelection()
 	m_selecBox.setLeft(0);
 	m_selecBox.setWidth(-1);
 	hasSelection = false;
+	selectionSent = false;
 }
 
 
