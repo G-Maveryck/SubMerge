@@ -40,16 +40,19 @@
 #include <QDebug>
 #include <qsettings.h>
 #include <qapplication.h>
+#include "SearchResultModel.h"
 
 
 SM_MainWindow::SM_MainWindow(QWidget* parent)
 	:QMainWindow(parent)
 	, view(this)
+	, SearchResultsMod(new SearchResultModel(this))
 	, settings(new QSettings(this))
 {
+	view.TableResults->setModel(SearchResultsMod);
 
 
-	connect(view.MenuBar->prefAct, &QAction::triggered,
+	connect(view.MenuBar->openPrefsAct, &QAction::triggered,
 		this, &SM_MainWindow::on_prefAct_trigger);
 
 	connect(view.MenuBar->openAct, &QAction::triggered,
@@ -91,10 +94,10 @@ void SM_MainWindow::on_OpenFile_triggered()
 {
 	QString filePath = 
 		QFileDialog::getOpenFileName(
-		this,
-		tr("Open file"),
-		tr("D:/"),
-		tr("All Files (*.*)") );
+		this,						// Parent
+		tr("Open file"),			// Caption
+		tr("D:/"),					// Directory
+		tr("All Files (*.*)") );	// Filter
 
 	QLOG(filePath);
 }

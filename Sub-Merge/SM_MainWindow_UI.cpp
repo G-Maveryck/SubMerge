@@ -23,12 +23,14 @@
 
 #include "SM_MainWindow_UI.h"
 
-#include<QLayout.h>
-#include<qgridlayout.h>
-
-#include<qlabel.h>
-#include<qsizepolicy.h>
-#include<qmargins.h>
+#include <QLayout.h>
+#include <qgridlayout.h>
+		 
+#include <qlabel.h>
+#include <qsizepolicy.h>
+#include <qmargins.h>
+#include <qtableview.h>
+#include <qheaderview.h>
 
 
 SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullptr)
@@ -48,7 +50,7 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 
 	//UI Elements : Frame up / F_Search
 	, searchBox(new QLineEdit(MainWindow))
-	, searchResults(new QTableView(MainWindow))
+	, TableResults(new QTableView(MainWindow))
 
 	//UI Elements : Frame Down / F_Playing
 	, lout_ControlBar(new QHBoxLayout(f_Playing))
@@ -104,11 +106,15 @@ SM_MainWindow_UI::SM_MainWindow_UI(QMainWindow* MainWindow = (QMainWindow*)nullp
 		QSizePolicy::Expanding, QSizePolicy::Fixed)
 	);
 
+	TableResults->setSelectionBehavior(QAbstractItemView::SelectRows);
+	TableResults->setSortingEnabled(true);
+	TableResults->horizontalHeader()->setSectionsMovable(true);
+	
 
 	lout_search->setContentsMargins(3,3,3,3);
 	lout_search->addWidget(searchBox, 0, 0);
 	lout_search->addItem(spacerSearch, 0, 1);
-	lout_search->addWidget(searchResults, 1, 0, 1, 2);
+	lout_search->addWidget(TableResults, 1, 0, 1, 2);
 
 	f_Search->setLayout(lout_search);
 	f_Search->setBaseSize(1200, 500);

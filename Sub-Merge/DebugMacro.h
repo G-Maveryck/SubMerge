@@ -29,37 +29,37 @@
 
 
 #include <qdebug.h>
-
-	// Debug Macro for calling qDebug without an endl
-	// Macro is disabled in Release mode for Optimisation
-#ifdef SUBM_DEBUG
-#define QLOG(x) qDebug() << x
-#endif // SM_DEBUG
-
-#ifdef SUBM_RELEASE
-#define QLOG(x)
-#endif // SM_RELEASE
-
-
-	// Macro used for "encapsulating" code, and compiling it in debug mode only
-#ifdef SUBM_DEBUG
-#define FOR_DEBUG(y) y
-#endif // SM_DEBUG
-
-#ifdef SUBM_RELEASE
-#define FOR_DEBUG(y)
-#endif // SM_DEBUG
-
-
-	// Macro used for switch from one argument to another in debug or release.
-	// It use the x argument in debug mode and y argument in release mode.
-#ifdef SUBM_DEBUG
-#define TOGGLE_ARG(DEBUG_ARG, RELEASE_ARG) DEBUG_ARG
-#endif // SUBM_DEBUG
-
-#ifdef SUBM_RELEASE
-#define TOGGLE_ARG(DEBUG_ARG, RELEASE_ARG) RELEASE_ARG
-#endif // SUBM_RELEASE
+	
+		// Debug Macro for calling qDebug without an endl
+		// Macro is disabled in Release mode for Optimisation
+	#ifdef SUBM_DEBUG
+	#define QLOG(x) qDebug() << x
+	#endif // SM_DEBUG
+	
+	#ifdef SUBM_RELEASE
+	#define QLOG(x)
+	#endif // SM_RELEASE
+	
+	
+		// Macro used for "encapsulating" code, and compiling it in debug mode only
+	#ifdef SUBM_DEBUG
+	#define FOR_DEBUG(y) y
+	#endif // SM_DEBUG
+	
+	#ifdef SUBM_RELEASE
+	#define FOR_DEBUG(y)
+	#endif // SM_DEBUG
+	
+	
+		// Macro used for switch from one argument to another in debug or release.
+		// It use the x argument in debug mode and y argument in release mode.
+	#ifdef SUBM_DEBUG
+	#define TOGGLE_ARG(DEBUG_ARG, RELEASE_ARG) DEBUG_ARG
+	#endif // SUBM_DEBUG
+	
+	#ifdef SUBM_RELEASE
+	#define TOGGLE_ARG(DEBUG_ARG, RELEASE_ARG) RELEASE_ARG
+	#endif // SUBM_RELEASE
 
 
 

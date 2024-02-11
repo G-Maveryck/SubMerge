@@ -34,6 +34,12 @@
     <ClCompile Include="WaveformWidget.cpp">
       <Filter>src\Ui</Filter>
     </ClCompile>
+    <ClCompile Include="SearchResultModel.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="SearchResultItem.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SubMerge.qrc" />
@@ -50,6 +56,9 @@
     </Filter>
     <Filter Include="src\Ui">
       <UniqueIdentifier>{f913f990-aa44-4dc2-9241-8f312720a608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Model">
+      <UniqueIdentifier>{9baab014-fe57-4204-86da-e051c5319359}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +89,9 @@
     <QtMoc Include="PrefDialog.h">
       <Filter>src\Ui</Filter>
     </QtMoc>
+    <QtMoc Include="SearchResultModel.h">
+      <Filter>src\Model</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sub-Merge.rc" />
@@ -90,6 +102,9 @@
     </ClInclude>
     <ClInclude Include="SM_MainWindow_UI.h">
       <Filter>src\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchResultItem.h">
+      <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

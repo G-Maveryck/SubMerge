@@ -31,6 +31,7 @@
 #ifndef SUBMERGE_H
 #define SUBMERGE_H
 
+
 #include <QtWidgets/QMainWindow>
 #include <qsettings.h>
 
@@ -38,8 +39,8 @@
 #include "PrefDialog.h"
 
 #include "Audio_player.h"
-#include "TimelineFrame.h"
 #include "FocusedFile.h"
+#include "SearchResultModel.h"
 
 
 class SM_MainWindow : public QMainWindow
@@ -52,12 +53,12 @@ public:
 
 protected:
     void on_prefAct_trigger();
-
     void on_OpenFile_triggered();
 
 private:
     SM_MainWindow_UI view;      // View class (front-end)
-
+    SearchResultModel* SearchResultsMod;
+    
     QSettings* settings;
 
 };
