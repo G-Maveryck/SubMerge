@@ -36,6 +36,7 @@ SearchResultItem::SearchResultItem()
 	, m_Duration(-1)
 	, m_Path("")
 	, m_Description("")
+	, validItem(false)
 {
 
 }
@@ -48,6 +49,7 @@ SearchResultItem::SearchResultItem(int _samplerate, int _bitrate, int _channels,
 	, m_Duration(_duration)
 	, m_Path(_path)
 	, m_Description(_description)
+	, validItem(true)
 {
 
 }
@@ -56,12 +58,17 @@ SearchResultItem::~SearchResultItem()
 {
 }
 
-QVariant SearchResultItem::getData(int index)
+bool SearchResultItem::isValid() const
+{
+	return validItem;
+}
+
+QVariant SearchResultItem::atColumn(int columnIndex)
 {
 		// return the corresponding value to the index in parameter.
 		// convenience to acces succesivly all data through a single index and function.
 
-	switch (index)
+	switch (columnIndex)
 	{
 	case 0:
 		return format();
@@ -85,12 +92,16 @@ QVariant SearchResultItem::getData(int index)
 		return QVariant();
 	}
 
-	return QVariant();
 }
 
 
 
 QString SearchResultItem::format() const
+	/*
+	* Return a QString built with samplerate and bitrate.
+	* QString is build with "Arg1 | Arg2" ("%1 | %2"),
+	* where Samplerate is passed as Arg1, and bitrate is passed as Arg2
+	*/
 {
 	return QString("%1 | %2")
 		.arg(m_SampleRate)

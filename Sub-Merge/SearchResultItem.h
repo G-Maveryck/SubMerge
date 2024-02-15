@@ -49,7 +49,8 @@ public:
 		);
 	~SearchResultItem();
 
-	QVariant getData(int index);	// Used to acces each properties with an "index". Corresponding to the "column"
+	bool isValid() const;
+	QVariant atColumn(int columnIndex);	// Used to acces each properties with an "index". Corresponding to the "column"
 
 
 protected:
@@ -57,8 +58,10 @@ protected:
 
 
 private:
-	// Properties section
-	/*0*/ int m_SampleRate;		// Samples per second (48kHz, 96kHz, etc...)
+	bool validItem;
+
+	// Properties section, corresponding index in comment.
+	/*0*/ int m_SampleRate;			// Samples per second (48kHz, 96kHz, etc...)
 	/*0*/ int m_BitRate;			// Bits per samples
 	/*1*/ int m_ChannelCount;		// Number of audio channels
 	/*2*/ QString m_Name;			// Name of the file

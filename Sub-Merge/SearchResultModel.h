@@ -21,8 +21,11 @@
 *-------------------------------------------------------------------------------------- */
 
 /*
-	This class implement a model data to store and organise the search results.
-	Results will then be displayed by the "QTableView TableResults", in the view part.
+*	This class implement a model data to store and organise the search results.
+*	Results will then be displayed by the "QTableView TableResults", in the view part.
+*
+*	Results are stored in a list, each item of the list correspond to a row.
+*	Each columns are stored in in the Item, and accessed through item.getData(Column)
 */
 
 #ifndef SEARCH_RESULTS_MODEL_H
@@ -49,13 +52,16 @@ public:
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
-	virtual bool insertRow(int row, int count, const QModelIndex& parent = QModelIndex());
-	virtual bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex());
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 	
 	QVariant data(const QModelIndex& index, int role) const override;
-	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+	void addResult(SearchResultItem* _result);
+
+	// virtual bool insertRow(int row, int count, const QModelIndex& parent = QModelIndex());
+	// virtual bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex());
+	
+	// bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 
 
 protected:
@@ -63,7 +69,7 @@ protected:
 
 
 private:
-	QList<SearchResultItem*> m_results;
+	QList<SearchResultItem*> m_resultsItems;	// Store all the ResultsItems in a list. Each Item correspond to a Row of the table.
 
 };
 

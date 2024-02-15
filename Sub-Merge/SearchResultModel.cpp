@@ -31,9 +31,9 @@
 
 SearchResultModel::SearchResultModel(QObject* parent = (QObject*)nullptr)
 	: QAbstractTableModel(parent)
-	, m_results(0)
+	, m_resultsItems(0)
 {
-	m_results.push_back(
+	m_resultsItems.push_back(
 		new SearchResultItem(48, 16, 2, "First File", 1542, "D:/", "Nice audio, very textured")
 	);
 }
@@ -69,21 +69,24 @@ QVariant SearchResultModel::headerData(int section, Qt::Orientation orientation,
 
 
 
-
+/*
 bool SearchResultModel::insertRow(int row, int count, const QModelIndex& parent)
 {
 	return false;
 }
+*/
 
+/*
 bool SearchResultModel::insertColumns(int column, int count, const QModelIndex& parent)
 {
 	return false;
 }
+*/
 
 
 int SearchResultModel::rowCount(const QModelIndex& parent) const
 {
-	return m_results.size();
+	return m_resultsItems.size();
 }
 
 int SearchResultModel::columnCount(const QModelIndex& parent) const
@@ -93,36 +96,53 @@ int SearchResultModel::columnCount(const QModelIndex& parent) const
 
 
 QVariant SearchResultModel::data(const QModelIndex& index, int role) const
+	/*
+	* Method to read data from the cells.
+	* Return the corresponding data stored in the item.index(COL).
+	*/
 {
-	// method to read data from the cells.
 	// store the current index
 	const int ROW(index.row());
 	const int COL(index.column());
 	
-	if (role == Qt::DisplayRole) {
-		return m_results.at(ROW)->getData(COL);
+	if (role == Qt::DisplayRole) 
+	{
+		if (m_resultsItems.at(ROW)->isValid() ) {
+			return m_resultsItems.at(ROW)->atColumn(COL);
+		}
 	}
-
-	return QVariant();
+	else
+	{
+		return QVariant();
+	}
 }
 
+void SearchResultModel::addResult(SearchResultItem* _result) 
+{
+	if (_result->isValid() )
+	{
+		m_resultsItems.push_back(_result);
+	}
+}
+
+/*
 bool SearchResultModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-
 	return false;
 }
+*/
 
 inline void SearchResultModel::resetResults()
 {
-	QLOG("results before clear() : " << m_results.size());
+	QLOG("results before clear() : " << m_resultsItems.size());
 
-	for (int i = 0; i < m_results.size(); i++)
+	for (int i = 0; i < m_resultsItems.size(); i++)
 	{
-		delete m_results.at(i);
+		delete m_resultsItems.at(i);
 	}
-	m_results.clear();
+	m_resultsItems.clear();
 
-	QLOG("results after clear() : " << m_results.size());
+	QLOG("results after clear() : " << m_resultsItems.size());
 }
 
 
